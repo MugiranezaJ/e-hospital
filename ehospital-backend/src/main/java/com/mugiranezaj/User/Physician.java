@@ -3,11 +3,16 @@ package com.mugiranezaj.User;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class Physician extends User {
     private String email;
     JSONObject response;
+
+    public String getEmail() {
+        return this.email;
+    }
 
     public Physician(String id, String email, String password, String name, int age, String gender) {
         this.id = id;
@@ -21,6 +26,9 @@ public class Physician extends User {
     public Physician(String email, String password) {
         this.email = email;
         this.password = password;
+    }
+
+    public Physician() {
     }
 
     private static Map<String, Physician> physicianMap = new LinkedHashMap<>();
@@ -83,11 +91,24 @@ public class Physician extends User {
         return "{" +
                 "id:'" + id + '\'' +
                 ", name:'" + name + '\'' +
-                ", username:'" + email + '\'' +
+                ", email:'" + email + '\'' +
                 ", gender:'" + gender + '\'' +
                 ", age:" + age +
                 ", role:'" + role + '\'' +
                 '}';
+    }
+
+    public JSONArray getAllPhysicians() {
+        JSONArray jsonArray = new JSONArray();
+        for (Physician physician : physicianMap.values()) {
+            JSONObject patientJson = new JSONObject();
+            patientJson.put("name", physician.getName());
+            patientJson.put("email", physician.getEmail());
+            patientJson.put("gender", physician.getGender());
+            patientJson.put("age", physician.getAge());
+            jsonArray.put(patientJson);
+        }
+        return jsonArray;
     }
 
 }

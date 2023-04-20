@@ -2,10 +2,22 @@ package com.mugiranezaj.User;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class Patient extends User {
     private String username;
+    private String[] permitted;
+
+    public String getUsername(){
+        return this.username;
+    }
+
+    public String[] getPermitted(){
+        return this.permitted;
+    }
+
 
     public Patient(String id, String username, String password, String name, int age, String gender) {
         this.id = id;
@@ -19,6 +31,9 @@ public class Patient extends User {
     public Patient(String username, String password) {
         this.username = username;
         this.password = password;
+    }
+
+    public Patient() {
     }
 
     private static Map<String, Patient> patientMap = new LinkedHashMap<>();
@@ -96,6 +111,19 @@ public class Patient extends User {
                 ", age:" + age +
                 ", role:'" + role + '\'' +
                 '}';
+    }
+
+    public JSONArray getAllPatient() {
+        JSONArray jsonArray = new JSONArray();
+        for (Patient patient : patientMap.values()) {
+            JSONObject patientJson = new JSONObject();
+            patientJson.put("name", patient.getName());
+            patientJson.put("username", patient.getUsername());
+            patientJson.put("gender", patient.getGender());
+            patientJson.put("age", patient.getAge());
+            jsonArray.put(patientJson);
+        }
+        return jsonArray;
     }
 
 }

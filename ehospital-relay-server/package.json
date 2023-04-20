@@ -1,0 +1,42 @@
+{
+  "name": "ehospital-relay-server",
+  "version": "1.0.0",
+  "description": "a relay server for ehospital",
+  "main": "app.js",
+  "scripts": {
+    "heroku-postbuild": "babel server -d build",
+    "start": "ls ./server && babel ../server -d ../build && node ../build/app.js",
+    "start:dev": "nodemon --exec npx babel-node ./server/app.js",
+    "clean": "rm -rf build && mkdir build",
+    "build-babel": "babel -d ./build ./server/app.js -s"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MugiranezaJ/e-hospital.git"
+  },
+  "author": "MugiranezaJ",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MugiranezaJ/e-hospital/issues"
+  },
+  "homepage": "https://github.com/MugiranezaJ/e-hospital#readme",
+  "keywords": [],
+  "dependencies": {
+    "@babel/cli": "^7.17.6",
+    "@babel/core": "^7.17.9",
+    "@babel/plugin-transform-runtime": "^7.19.1",
+    "@babel/preset-env": "^7.19.1",
+    "@babel/register": "^7.18.9",
+    "@babel/runtime": "^7.17.9",
+    "axios": "^0.26.1",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3"
+  },
+  "devDependencies": {
+    "@babel/node": "^7.16.8",
+    "@babel/polyfill": "^7.12.1",
+    "nodemon": "^2.0.15"
+  }
+}

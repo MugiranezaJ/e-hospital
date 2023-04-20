@@ -3,11 +3,16 @@ package com.mugiranezaj.User;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class Pharmacist extends User {
     private String phone;
     JSONObject response;
+
+    public String getPhone() {
+        return this.phone;
+    }
 
     public Pharmacist(String id, String phone, String password, String name, int age, String gender) {
         this.id = id;
@@ -21,6 +26,9 @@ public class Pharmacist extends User {
     public Pharmacist(String phone, String password) {
         this.phone = phone;
         this.password = password;
+    }
+
+    public Pharmacist() {
     }
 
     private static Map<String, Pharmacist> pharmacistMap = new LinkedHashMap<>();
@@ -93,6 +101,19 @@ public class Pharmacist extends User {
                 ", age:" + age +
                 ", role:'" + role + '\'' +
                 '}';
+    }
+
+    public JSONArray getAllPharmacist() {
+        JSONArray jsonArray = new JSONArray();
+        for (Pharmacist pharmacist : pharmacistMap.values()) {
+            JSONObject patientJson = new JSONObject();
+            patientJson.put("name", pharmacist.getName());
+            patientJson.put("phone", pharmacist.getPhone());
+            patientJson.put("gender", pharmacist.getGender());
+            patientJson.put("age", pharmacist.getAge());
+            jsonArray.put(patientJson);
+        }
+        return jsonArray;
     }
 
 }

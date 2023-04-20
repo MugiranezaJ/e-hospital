@@ -1,2 +1,3 @@
 ehospital-backend/target
 .vscode
+ehospital-relay-server/node_modules

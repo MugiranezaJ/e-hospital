@@ -31,7 +31,7 @@ public class Physician extends User {
     public Physician() {
     }
 
-    private static Map<String, Physician> physicianMap = new LinkedHashMap<>();
+    public static Map<String, Physician> physicianMap = new LinkedHashMap<>();
 
     @Override
     public JSONObject register() {
@@ -46,6 +46,12 @@ public class Physician extends User {
         if (this.password.length() < 7 || this.password.length() > 8) {
             response.put("status", 400);
             response.put("message", "password must be between 4 and 6 characters");
+            return response;
+        }
+
+        if (physicianMap.containsKey(this.email)) {
+            response.put("status", 409);
+            response.put("message", "Physician with this email already exists");
             return response;
         }
 
@@ -110,5 +116,4 @@ public class Physician extends User {
         }
         return jsonArray;
     }
-
 }

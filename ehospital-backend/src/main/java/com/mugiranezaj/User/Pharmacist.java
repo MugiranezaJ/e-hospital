@@ -5,6 +5,9 @@ import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class Pharmacist extends User {
     private String phone;
@@ -116,4 +119,19 @@ public class Pharmacist extends User {
         return jsonArray;
     }
 
+    public void uploadMedicine(String medName, double medPrice, String medExpiration) throws IOException {
+        File file = new File("medecines.csv");
+        boolean fileExists = file.exists();
+
+        FileWriter fileWriter = new FileWriter(file, true); // true to append to existing file, false to overwrite
+
+        if (!fileExists) {
+            fileWriter.append("med-name,med-price,med-expiration\n"); // add header row if file doesn't exist
+        }
+
+        fileWriter.append(String.format("%s,%.2f,%s\n", medName, medPrice, medExpiration)); // append new row
+
+        fileWriter.close();
+    }
+    
 }

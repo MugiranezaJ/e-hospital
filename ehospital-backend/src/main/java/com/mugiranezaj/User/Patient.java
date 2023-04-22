@@ -1,6 +1,9 @@
 package com.mugiranezaj.User;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.json.JSONArray;
@@ -10,14 +13,13 @@ public class Patient extends User {
     private String username;
     private String[] permitted;
 
-    public String getUsername(){
+    public String getUsername() {
         return this.username;
     }
 
-    public String[] getPermitted(){
+    public String[] getPermitted() {
         return this.permitted;
     }
-
 
     public Patient(String id, String username, String password, String name, int age, String gender) {
         this.id = id;
@@ -36,7 +38,9 @@ public class Patient extends User {
     public Patient() {
     }
 
-    private static Map<String, Patient> patientMap = new LinkedHashMap<>();
+    public static Map<String, Patient> patientMap = new LinkedHashMap<>();
+    public static List<String> patientAccessManager = new ArrayList<>();
+    public static Map<String, List<String>> patientDiseases = new HashMap<>();
 
     @Override
     public JSONObject register() {
@@ -56,7 +60,7 @@ public class Patient extends User {
         }
 
         if (patientMap.containsKey(this.username)) {
-            response.put("status", 400);
+            response.put("status", 409);
             response.put("message", "Patient with this username already exists");
             return response;
         }
@@ -126,4 +130,18 @@ public class Patient extends User {
         return jsonArray;
     }
 
+    public boolean grantAccess(String user) {
+        System.out.println(patientMap.toString() + Physician.physicianMap.toString());
+        if (patientMap.containsKey(user) || Physician.physicianMap.containsKey(user))
+            return patientAccessManager.add(user);
+        return false;
+    }
+
+    public boolean hasAccess(String user) {
+        return patientAccessManager.contains(user);
+    }
+
+    public List<String> getUsersWithAccess() {
+        return patientAccessManager;
+    }
 }

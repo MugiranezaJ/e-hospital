@@ -7,7 +7,9 @@ const authSlice = createSlice({
     isFetching: false,
     isAuth: false,
     token: "",
-    user: {},
+    users: {},
+    physicians: {},
+    pharmacists: {},
     response: null,
     status: "",
     error: null,
@@ -24,8 +26,8 @@ const authSlice = createSlice({
     setToken(state, action) {
       state.token = action.payload.token;
     },
-    setUser(state, action) {
-      state.user = action.payload;
+    setUsers(state, action) {
+      state.users = action.payload;
     },
     logout(state) {
       //   store.remove("user");
@@ -44,6 +46,12 @@ const authSlice = createSlice({
 
     setResponse(state, action) {
       state.response = action.payload;
+    },
+    setPhysicians(state, action) {
+      state.physicians = action.payload;
+    },
+    setPharmacists(state, action) {
+      state.pharmacists = action.payload;
     },
   },
 });

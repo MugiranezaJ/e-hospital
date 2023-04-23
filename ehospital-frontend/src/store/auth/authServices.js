@@ -38,3 +38,18 @@ export const profileService = async (token) => {
     return err?.response;
   }
 };
+
+
+// users
+export const getUsersService = async (data) => {
+  try {
+    const res = await axios({
+      method: "GET",
+      url: `${SERVER_URL}/user/all`,
+      params: data,
+    });
+    return res;
+  } catch (err) {
+    return err?.response;
+  }
+};

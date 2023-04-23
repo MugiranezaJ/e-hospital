@@ -1,13 +1,18 @@
 // import store from "store";
 import { authActions } from ".";
-import { loginService, profileService, registerService } from "./authServices";
+import {
+  getUsersService,
+  loginService,
+  profileService,
+  registerService,
+} from "./authServices";
 
 export const registerAction = (data) => {
   return async (dispatch) => {
     try {
       dispatch(authActions.setIsFetching(true));
       const res = await registerService(data);
-      dispatch(authActions.setResponse(res?.data))
+      dispatch(authActions.setResponse(res?.data));
       if (res?.status === 200) {
         // store.set("authToken", res?.data?.data?.token);
         // store.set("user", res?.data?.data?.user);
@@ -62,6 +67,44 @@ export const profileAction = (token) => {
     } catch (err) {
       // dispatch(authActions.login({ isAuth: false }));
       // dispatch(authActions.setIsFetching(false));
+      console.log(err);
+    }
+  };
+};
+
+export const getPhysiciansAction = (data) => {
+  return async (dispatch) => {
+    try {
+      dispatch(authActions.setIsFetching(true));
+      const res = await getUsersService(data);
+      dispatch(authActions.setPhysicians(res?.data));
+      if (res?.status === 200) {
+        // store.set("authToken", res?.data?.data?.token);
+        // store.set("user", res?.data?.data?.user);
+        dispatch(authActions.setIsFetching(false));
+      } else {
+        dispatch(authActions.setIsFetching(false));
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+
+export const getPharmacistsAction = (data) => {
+  return async (dispatch) => {
+    try {
+      dispatch(authActions.setIsFetching(true));
+      const res = await getUsersService(data);
+      dispatch(authActions.setPharmacists(res?.data));
+      if (res?.status === 200) {
+        // store.set("authToken", res?.data?.data?.token);
+        // store.set("user", res?.data?.data?.user);
+        dispatch(authActions.setIsFetching(false));
+      } else {
+        dispatch(authActions.setIsFetching(false));
+      }
+    } catch (err) {
       console.log(err);
     }
   };

@@ -4,13 +4,13 @@ export class User {
   // TODO: Remove password from payload
   static getUsers = async (req, res, next) => {
     try {
-      const userType = req.body.userType;
+      const userType = req.query.userType;
       console.log("user type:", userType);
-      const token = req.headers.authorization ?? "";
+      // const token = req.headers.authorization ?? "";
       axios
         .get("/users", {
-          headers: { Authorization: token },
-          data: { userType },
+          // headers: { Authorization: token },
+          params: { userType },
         })
         .then((response) => {
           return res.status(response.status).json(response.data);

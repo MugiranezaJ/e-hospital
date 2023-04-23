@@ -1,15 +1,25 @@
 import { useState, useEffect } from "react";
 import PhysicianCard from "./PhysicianCard.js";
+import {
+  getPharmacistsAction,
+  getPhysiciansAction,
+} from "../store/auth/authActions.js";
+import { useDispatch, useSelector } from "react-redux";
 
 function PatientDashboard() {
   const [physicians, setPhysicians] = useState([]);
+  const { auth } = useSelector((state) => state);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    fetch("/api/physicians")
-      .then((response) => response.json())
-      .then((data) => setPhysicians(data))
-      .catch((error) => console.error(error));
-  }, []);
+    // fetch("/api/physicians")
+    //   .then((response) => response.json())
+    //   .then((data) => setPhysicians(data))
+    //   .catch((error) => console.error(error));
+
+    getPhysiciansAction({ userType: "patient" })(dispatch);
+    getPharmacistsAction({ userType: "pharmacist" })(dispatch);
+  }, [dispatch]);
 
   return (
     <div className="flex flex-col xmin-h-screen px-10 py-10 gap-y-10">
@@ -23,15 +33,12 @@ function PatientDashboard() {
             Available Physicians
           </h2>
 
-          {!physicians.length > 0 ? (
+          {auth?.physicians?.data?.length > 0 ? (
             <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
-              {Array.from({ length: 4 }).map((physician) => (
+              {auth.physicians?.data?.map((physician, index) => (
                 <PhysicianCard
-                  key={physician?.id}
-                  id={physician?.id}
-                  name={physician?.name}
-                  specialty={physician?.specialty}
-                  imageUrl={physician?.imageUrl}
+                  key={index}
+                  user={physician}
                   onGrantAccess={() =>
                     alert(`Access granted to Dr. ${physician?.name}`)
                   }
@@ -50,17 +57,14 @@ function PatientDashboard() {
             Available Pharmacist
           </h2>
 
-          {!physicians.length > 0 ? (
+          {auth?.pharmacists?.data?.length > 0 ? (
             <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
-              {Array.from({ length: 4 }).map((physician) => (
+              {auth?.pharmacists?.data?.map((pharmacist, index) => (
                 <PhysicianCard
-                  key={physician?.id}
-                  id={physician?.id}
-                  name={physician?.name}
-                  specialty={physician?.specialty}
-                  imageUrl={physician?.imageUrl}
+                  key={index}
+                  user={pharmacist}
                   onGrantAccess={() =>
-                    alert(`Access granted to Dr. ${physician?.name}`)
+                    alert(`Access granted to Dr. ${pharmacist?.name}`)
                   }
                 />
               ))}

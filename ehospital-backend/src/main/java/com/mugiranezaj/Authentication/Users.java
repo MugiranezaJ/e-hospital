@@ -26,9 +26,11 @@ public class Users extends HttpServlet {
             throws ServletException, IOException {
         jsonResponse = new JSONObject();
         response.setContentType("application/json");
-        String requestBody = request.getReader().lines().collect(Collectors.joining());
-        json = new JSONObject(requestBody);
-        String userType = json.optString("userType", "");
+        // String requestBody =
+        // request.getReader().lines().collect(Collectors.joining());
+        // json = new JSONObject(requestBody);
+        String userType = request.getParameter("userType");
+        System.out.println("USERTYPE: " + userType);
 
         switch (userType) {
             case "pharmacist":

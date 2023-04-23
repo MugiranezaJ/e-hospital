@@ -39,7 +39,6 @@ export const profileService = async (token) => {
   }
 };
 
-
 // users
 export const getUsersService = async (data) => {
   try {
@@ -47,6 +46,19 @@ export const getUsersService = async (data) => {
       method: "GET",
       url: `${SERVER_URL}/user/all`,
       params: data,
+    });
+    return res;
+  } catch (err) {
+    return err?.response;
+  }
+};
+
+export const grantAccessService = async (data) => {
+  try {
+    const res = await axios({
+      method: "POST",
+      url: `${SERVER_URL}/access/grant`,
+      data: data,
     });
     return res;
   } catch (err) {

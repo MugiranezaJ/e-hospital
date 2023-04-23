@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import PhysicianCard from "./PhysicianCard.js";
 import {
   getPharmacistsAction,
@@ -7,16 +7,10 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 function PatientDashboard() {
-  const [physicians, setPhysicians] = useState([]);
   const { auth } = useSelector((state) => state);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // fetch("/api/physicians")
-    //   .then((response) => response.json())
-    //   .then((data) => setPhysicians(data))
-    //   .catch((error) => console.error(error));
-
     getPhysiciansAction({ userType: "patient" })(dispatch);
     getPharmacistsAction({ userType: "pharmacist" })(dispatch);
   }, [dispatch]);

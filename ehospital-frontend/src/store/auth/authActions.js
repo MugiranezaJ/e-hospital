@@ -2,6 +2,7 @@
 import { authActions } from ".";
 import {
   getUsersService,
+  grantAccessService,
   loginService,
   profileService,
   registerService,
@@ -105,6 +106,24 @@ export const getPharmacistsAction = (data) => {
         dispatch(authActions.setIsFetching(false));
       }
     } catch (err) {
+      console.log(err);
+    }
+  };
+};
+
+export const grantAccessAction = (data) => {
+  return async (dispatch) => {
+    try {
+      dispatch(authActions.setIsFetching(true));
+      const res = await grantAccessService(data);
+      // console.log(">>>>>>>:: ", res);
+      if (res?.status === 200) {
+        dispatch(authActions.setGrantAccess(res.data));
+        dispatch(authActions.setIsFetching(false));
+      }
+    } catch (err) {
+      // dispatch(authActions.login({ isAuth: false }));
+      // dispatch(authActions.setIsFetching(false));
       console.log(err);
     }
   };

@@ -21,7 +21,7 @@ function Footer() {
 
 function SideBar() {
   return (
-    <div className="bg-white text-black w-40 rounded-md flex flex-col items-center py-4">
+    <div className="fixed h-full bg-white text-black w-40 rounded-md flex flex-col items-center py-4">
       <div className=" h-32 w-32 flex flex-col justify-center items-center">
         <div className="bg-slate-200 w-12 h-12 rounded-lg"></div>
         <h1 className="font-thin xtext-2xl mb-6">Dashboard</h1>

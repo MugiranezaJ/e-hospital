@@ -8,6 +8,7 @@ const authSlice = createSlice({
     isAuth: false,
     token: "",
     users: {},
+    user: {},
     physicians: {},
     pharmacists: {},
     grantAccess: null,
@@ -29,6 +30,9 @@ const authSlice = createSlice({
     },
     setUsers(state, action) {
       state.users = action.payload;
+    },
+    setUser(state, action) {
+      state.user = action.payload;
     },
     logout(state) {
       //   store.remove("user");

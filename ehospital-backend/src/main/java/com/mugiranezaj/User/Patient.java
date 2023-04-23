@@ -11,23 +11,25 @@ import org.json.JSONObject;
 
 public class Patient extends User {
     private String username;
-    private String[] permitted;
+    // private String role = "patient";
+    // private String[] permitted;
 
     public String getUsername() {
         return this.username;
     }
 
-    public String[] getPermitted() {
-        return this.permitted;
-    }
+    // public String[] getPermitted() {
+    // return this.permitted;
+    // }
 
-    public Patient(String id, String username, String password, String name, int age, String gender) {
+    public Patient(String id, String username, String password, String name, int age, String gender, String role) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.name = name;
         this.age = age;
         this.gender = gender;
+        this.role = "patient";
     }
 
     public Patient(String username, String password) {
@@ -66,13 +68,13 @@ public class Patient extends User {
         }
 
         // save the user
-        patientMap.put(this.username, new Patient(id, username, password, name, age, gender));
+        patientMap.put(this.username, new Patient(id, username, password, name, age, gender, role));
         System.out.println("Users: " + patientMap);
 
         // return response
         response.put("status", 200);
         response.put("message", "Patient created successfully");
-        response.put("data", "{}");
+        response.put("data", patientMap.get(this.username));
         return response;
 
     }

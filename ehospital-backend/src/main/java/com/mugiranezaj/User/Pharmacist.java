@@ -17,13 +17,14 @@ public class Pharmacist extends User {
         return this.phone;
     }
 
-    public Pharmacist(String id, String phone, String password, String name, int age, String gender) {
+    public Pharmacist(String id, String phone, String password, String name, int age, String gender, String role) {
         this.id = id;
         this.phone = phone;
         this.password = password;
         this.name = name;
         this.age = age;
         this.gender = gender;
+        this.role = "pharmacist";
     }
 
     public Pharmacist(String phone, String password) {
@@ -58,7 +59,7 @@ public class Pharmacist extends User {
         }
 
         // save the user
-        pharmacistMap.put(this.phone, new Pharmacist(id, phone, password, name, age, gender));
+        pharmacistMap.put(this.phone, new Pharmacist(id, phone, password, name, age, gender, role));
 
         // return response
         response.put("status", 200);
@@ -133,5 +134,5 @@ public class Pharmacist extends User {
 
         fileWriter.close();
     }
-    
+
 }

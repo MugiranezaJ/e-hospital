@@ -7,7 +7,7 @@ function PatientDashboardPage() {
   return (
     <div className=" flex flex-col justify-between h-screen">
       <Header />
-      <div className="flex flex-1">
+      <div className="relative flex flex-1 h-full overflow-scroll">
         <SideBar />
         <PatientDashboard />
       </div>

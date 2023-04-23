@@ -14,8 +14,8 @@ const RegisterForm = () => {
 
   const handleRoleChange = (e) => {
     const selectedRole = e.target.value;
-    setShowEmail(selectedRole === "pharmacist");
-    setShowPhone(selectedRole === "physician");
+    setShowEmail(selectedRole === "physician");
+    setShowPhone(selectedRole === "pharmacist");
     setShowUsername(selectedRole === "patient");
   };
 //   const [formData, setFormData] = useState({

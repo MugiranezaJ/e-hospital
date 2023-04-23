@@ -88,15 +88,15 @@ public class Register extends HttpServlet {
                 switch (userModel.role.toLowerCase()) {
 
                     case "pharmacist":
-                        user = new Pharmacist(id, phone, password, name, age, gender);
+                        user = new Pharmacist(id, phone, password, name, age, gender, role);
                         jsonResponse = user.register();
                         break;
                     case "patient":
-                        user = new Patient(id, username, password, name, age, gender);
+                        user = new Patient(id, username, password, name, age, gender, role);
                         jsonResponse = user.register();
                         break;
                     case "physician":
-                        user = new Physician(id, email, password, name, age, gender);
+                        user = new Physician(id, email, password, name, age, gender, role);
                         jsonResponse = user.register();
                         break;
                     default:

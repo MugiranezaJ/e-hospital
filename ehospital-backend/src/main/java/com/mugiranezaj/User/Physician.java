@@ -14,13 +14,14 @@ public class Physician extends User {
         return this.email;
     }
 
-    public Physician(String id, String email, String password, String name, int age, String gender) {
+    public Physician(String id, String email, String password, String name, int age, String gender, String role) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.name = name;
         this.age = age;
         this.gender = gender;
+        this.role = "physician";
     }
 
     public Physician(String email, String password) {
@@ -56,7 +57,7 @@ public class Physician extends User {
         }
 
         // save the user
-        physicianMap.put(this.email, new Physician(id, email, password, name, age, gender));
+        physicianMap.put(this.email, new Physician(id, email, password, name, age, gender, role));
 
         // return response
         response.put("status", 200);

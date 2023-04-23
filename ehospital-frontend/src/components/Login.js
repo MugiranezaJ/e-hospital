@@ -1,21 +1,38 @@
 import React, { useState } from "react";
 import CustomTextInput from "./CustomTextInput";
+import { useDispatch } from "react-redux";
+import { loginAction } from "../store/auth/authActions";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
   const [showEmail, setShowEmail] = useState(false);
   const [showPhone, setShowPhone] = useState(false);
   const [showUsername, setShowUsername] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleRoleChange = (e) => {
     const selectedRole = e.target.value;
-    setShowEmail(selectedRole === "pharmacist");
-    setShowPhone(selectedRole === "physician");
+    setShowEmail(selectedRole === "physician");
+    setShowPhone(selectedRole === "pharmacist");
     setShowUsername(selectedRole === "patient");
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const data = new FormData(event.target);
+
+    await loginAction(Object.fromEntries(data))(dispatch);
+    console.log(Object.fromEntries(data));
+    navigate("/dashboard");
   };
 
   return (
     <div className="flex flex-col justify-center items-center w-[450px]">
-      <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full">
+      <form
+        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full"
+        onSubmit={handleSubmit}
+      >
         <h2 className="text-2xl text-center font-bold mb-8">Login</h2>
         <div className="mb-4">
           <label

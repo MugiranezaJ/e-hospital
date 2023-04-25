@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 
+import com.mugiranezaj.Models.PatientsAccess;
 import com.mugiranezaj.User.Patient;
 import com.mugiranezaj.User.Pharmacist;
 import com.mugiranezaj.User.Physician;
@@ -27,27 +28,33 @@ public class Access extends HttpServlet {
         String requestBody = request.getReader().lines().collect(Collectors.joining());
         json = new JSONObject(requestBody);
         String userType = json.optString("userType", "");
+        String doctor = json.optString("doctor", "");
         String user = json.optString("user", "");
 
-        // Patient patient = new Patient();
+        Patient patient = new Patient();
         Physician physician = new Physician();
         Pharmacist pharmacist = new Pharmacist();
 
         if (userType.equals("physician")) {
-            if (physician.getAccess(user)) {
+            if (patient.setPhysicians(doctor) && physician.getAccess(user)) {
                 response.setStatus(200);
                 jsonResponse.put("status", 200);
                 jsonResponse.put("message", "access granted");
+                JSONObject jObject = new JSONObject();
+                jObject.put("doctor", doctor);
+                jObject.put("user", user);
+                jsonResponse.put("data", jObject);
             } else {
                 response.setStatus(404);
                 jsonResponse.put("status", 404);
                 jsonResponse.put("message", "user does not exist");
             }
         } else if (userType.equals("pharmacist")) {
-            if (pharmacist.getAccess(user)) {
+            if (pharmacist.getAccess(doctor, user)) {
                 response.setStatus(200);
                 jsonResponse.put("status", 200);
                 jsonResponse.put("message", "access granted");
+                jsonResponse.put("data", new PatientsAccess(doctor, user));
             } else {
                 response.setStatus(404);
                 jsonResponse.put("status", 404);

@@ -3,6 +3,7 @@ import PhysicianCard from "./PhysicianCard.js";
 import {
   getPharmacistsAction,
   getPhysiciansAction,
+  getPhysiciansWithGrantedAccessAction,
   getUsersWithGrantedAccessAction,
 } from "../store/auth/authActions.js";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,11 +18,26 @@ function PatientDashboard() {
   useEffect(() => {
     getPhysiciansAction({ userType: "physician" })(dispatch);
     getPharmacistsAction({ userType: "pharmacist" })(dispatch);
+    getPhysiciansWithGrantedAccessAction({ userType: "physician" })(dispatch);
     const localUser = localStorage.getItem("euser");
     if (localUser) setUser(JSON.parse(localUser));
 
     getUsersWithGrantedAccessAction({})(dispatch);
   }, [dispatch]);
+
+  // console.log(auth?.physiciansWithAcces?.data?.map((user) => user?.username))
+
+  console.log(
+    auth?.physiciansWithAcces?.data?.map((item) =>
+      item?.physicians?.filter((el) => el === user?.email)
+    )
+  );
+  const filteredData = auth?.physiciansWithAcces?.data?.filter(
+    (item, index, self) =>
+      item.physicians.includes(user?.email) &&
+      self.findIndex((t) => t.physicians.includes(user?.email)) === index
+  );
+  console.log("filtered", filteredData)
 
   return (
     <div className="flex flex-col pl-56 xmin-h-screen px-10 py-10 gap-y-10">
@@ -42,6 +58,7 @@ function PatientDashboard() {
                   <PhysicianCard
                     key={index}
                     user={physician}
+                    patient={user}
                     onGrantAccess={() =>
                       alert(`Access granted to Dr. ${physician?.name}`)
                     }
@@ -85,22 +102,21 @@ function PatientDashboard() {
         <div className="">
           <p className="text-gray-500 font-thin text-3xl mb-3">My Patients </p>
           <div className="flex flex-wrap gap-2">
-            {auth?.usersWithGrantedAccess?.data &&
-              Object.values(auth?.usersWithGrantedAccess?.data)?.map(
-                (patient, _index) => (
-                  <PatientsForPhysician
-                    username={patient?.username}
-                    patient={patient}
-                  />
-                )
-              )}
+            {filteredData?.map((patient, _index) => (
+              <PatientsForPhysician
+                // username={patient?.username}
+                patient={patient}
+              />
+            ))}
           </div>
         </div>
       )}
-      {["pharmacist", "physician"].includes(user?.role) && <div>
-        <p className="text-gray-500 font-thin text-3xl mb-3">My Patients </p>
-        <CSVViewer />
-      </div>}
+      {["pharmacist", "physician"].includes(user?.role) && (
+        <div>
+          <p className="text-gray-500 font-thin text-3xl mb-3">My Patients </p>
+          <CSVViewer />
+        </div>
+      )}
     </div>
   );
 }

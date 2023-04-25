@@ -146,3 +146,22 @@ export const getUsersWithGrantedAccessAction = (data) => {
     }
   };
 };
+
+export const getPhysiciansWithGrantedAccessAction = (data) => {
+  return async (dispatch) => {
+    try {
+      dispatch(authActions.setIsFetching(true));
+      const res = await getUsersWithGrantedAccessService(data);
+      dispatch(authActions.setphysiciansWithAcces(res?.data));
+      if (res?.status === 200) {
+        // store.set("authToken", res?.data?.data?.token);
+        // store.set("user", res?.data?.data?.user);
+        dispatch(authActions.setIsFetching(false));
+      } else {
+        dispatch(authActions.setIsFetching(false));
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};

@@ -7,6 +7,9 @@ import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import com.mugiranezaj.Models.PatientsAccess;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -38,7 +41,7 @@ public class Pharmacist extends User {
     }
 
     private static Map<String, Pharmacist> pharmacistMap = new LinkedHashMap<>();
-    public static List<String> myPatients = new ArrayList<>();
+    public static Map<String, PatientsAccess> myPatients = new LinkedHashMap<>();
 
     @Override
     public JSONObject register() {
@@ -138,13 +141,16 @@ public class Pharmacist extends User {
         fileWriter.close();
     }
 
-    public boolean getAccess(String added_user) {
+    public boolean getAccess( String doctor, String patient) {
         System.out.println(Patient.patientMap.toString() + Physician.physicianMap.toString());
-        if (Patient.patientMap.containsKey(added_user)) {
-            Patient user = Patient.patientMap.get(added_user);
+        if (Patient.patientMap.containsKey(patient)) {
+            Patient user = Patient.patientMap.get(patient);
             System.out.print(Patient.patientMap.values());
             System.out.print(user);
-            myPatients.add(user.getUsername());
+            
+            // jsonObject.put("doctor", "jsonObject");
+            // jsonObject.put("patient", added_user);
+            myPatients.put(user.getUsername(), new PatientsAccess(doctor, patient));
             return true;
         }
         return false;
@@ -152,8 +158,8 @@ public class Pharmacist extends User {
 
     public JSONArray getPatients() {
         JSONArray jsonArray = new JSONArray();
-        for (String _user : myPatients) {
-            JSONObject obj = new JSONObject(Patient.patientMap.get(_user));
+        for (PatientsAccess _user : myPatients.values()) {
+            JSONObject obj = new JSONObject(Patient.patientMap.get(_user.patient));
             obj.remove("allPatient");
             jsonArray.put(obj);
         }

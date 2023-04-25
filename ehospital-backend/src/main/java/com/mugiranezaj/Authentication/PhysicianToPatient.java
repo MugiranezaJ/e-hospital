@@ -15,7 +15,7 @@ import com.mugiranezaj.User.Patient;
 import com.mugiranezaj.User.Physician;
 
 @WebServlet("/physician/patients")
-public class PatientsForPhysicians extends HttpServlet {
+public class PhysicianToPatient extends HttpServlet {
     JSONObject json, jsonResponse;
 
     @Override

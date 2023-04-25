@@ -12,7 +12,9 @@ import org.json.JSONObject;
 public class Patient extends User {
     private String username;
     private String symptoms;
+    private String disease;
     private String medecine;
+    public static List<String> physicians = new ArrayList<>();
     User user;
     // private String role = "patient";
     // private String[] permitted;
@@ -31,6 +33,21 @@ public class Patient extends User {
 
     public void setMedecine(String medecine) {
         this.medecine = medecine;
+    }
+
+    public void setDisease(String disease) {
+        this.disease = disease;
+    }
+
+    public String getDisease() {
+        return this.disease;
+    }
+
+    public List<String> getPhysicians(){
+        return physicians;
+    }
+    public boolean setPhysicians(String physician) {
+        return physicians.add(physician);
     }
 
     // public String[] getPermitted() {
@@ -60,7 +77,7 @@ public class Patient extends User {
     public static Map<String, Patient> patientMap = new LinkedHashMap<>();
     public static Map<String, Pharmacist> pharmacistsWithAccess = new LinkedHashMap<>();
     public static Map<String, User> physiciansWithAccess = new LinkedHashMap<>();
-    public static Map<String, List<String>> patientDiseases = new HashMap<>();
+    public static Map<String, List<String>> patientMedecines = new HashMap<>();
 
     @Override
     public JSONObject register() {
@@ -108,6 +125,7 @@ public class Patient extends User {
         }
         if (patientMap.containsKey(this.username)) {
             Patient patient = patientMap.get(this.username);
+            System.out.println(patient.toString());
             if (!patient.password.equals(this.password)) {
                 response.put("status", 400);
                 response.put("message", "username or password is invalid");
@@ -133,8 +151,9 @@ public class Patient extends User {
                 ", username:'" + username + '\'' +
                 ", gender:'" + gender + '\'' +
                 ", age:" + age +
-                ", symptoms:" + symptoms +
+                ", symptoms:'" + symptoms + '\'' +
                 ", role:'" + role + '\'' +
+                ", physicians: '" + physicians + '\'' +
                 '}';
     }
 
@@ -147,6 +166,7 @@ public class Patient extends User {
             patientJson.put("gender", patient.getGender());
             patientJson.put("age", patient.getAge());
             patientJson.put("symptoms", patient.getSymptoms());
+            patientJson.put("physicians", physicians);
             jsonArray.put(patientJson);
         }
         return jsonArray;
@@ -167,18 +187,12 @@ public class Patient extends User {
     }
 
     public JSONArray getPhysiciansWithAccess() {
-        // JSONObject jsonObject = new JSONObject();
-        System.out.println("-------");
-        System.out.println(physiciansWithAccess);
-        System.out.println("-------");
         JSONArray jsonArray = new JSONArray();
         for (User user_ : physiciansWithAccess.values()) {
             JSONObject object = new JSONObject(user_);
             object.remove("allPhysicians");
             jsonArray.put(object);
         }
-        // jsonArray.put(new JSONObject(user));
-        // jsonObject.put("usersWithAccess", jsonArray);
         return jsonArray;
     }
 

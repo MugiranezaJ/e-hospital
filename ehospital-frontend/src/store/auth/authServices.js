@@ -66,11 +66,11 @@ export const grantAccessService = async (data) => {
   }
 };
 
-export const getUsersWithGrantedAccessService = async (_data) => {
+export const getUsersWithGrantedAccessService = async (data) => {
   try {
     const res = await axios({
       method: "GET",
-      url: `${SERVER_URL}/access/grant`,
+      url: `${SERVER_URL}/access/grant?userType=${data?.userType}`,
       // data: data,
     });
     return res;

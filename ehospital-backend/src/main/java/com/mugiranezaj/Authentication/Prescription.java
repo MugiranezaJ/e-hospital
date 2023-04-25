@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 
 import com.mugiranezaj.User.Patient;
+import com.mugiranezaj.User.Physician;
 
 @WebServlet("/prescriptions")
 public class Prescription extends HttpServlet {
@@ -30,22 +31,22 @@ public class Prescription extends HttpServlet {
         String patientId = json.optString("patientId", "");
         String prescriptions = json.optString("prescriptions", "");
 
-        if (!Patient.physiciansWithAccess.containsKey(doctor)) {
+        if (!Physician.myPatients.contains(patientId)) {
             response.setStatus(401);
             jsonResponse.put("message", "Un Authorized");
             response.getWriter().write(jsonResponse.toString());
         } else {
 
-            if (Patient.patientDiseases.containsKey(patientId)) {
-                Patient.patientDiseases.get(patientId).add(prescriptions);
+            if (Patient.patientMedecines.containsKey(patientId)) {
+                Patient.patientMedecines.get(patientId).add(prescriptions);
             } else {
                 List<String> diseases = new ArrayList<>();
                 diseases.add(prescriptions);
-                Patient.patientDiseases.put(patientId, diseases);
+                Patient.patientMedecines.put(patientId, diseases);
             }
 
             jsonResponse.put("message", "Prescriptions added successfully");
-            jsonResponse.put("data", Patient.patientDiseases.get(patientId));
+            jsonResponse.put("data", Patient.patientMedecines.get(patientId));
 
             response.getWriter().write(jsonResponse.toString());
         }
@@ -62,7 +63,7 @@ public class Prescription extends HttpServlet {
 
         jsonResponse.put("status", 200);
         // jsonResponse.put("message", "Prescriptions added successfully");
-        jsonResponse.put("data", Patient.patientDiseases.get(patientId));
+        jsonResponse.put("data", Patient.patientMedecines.get(patientId));
 
         response.getWriter().write(jsonResponse.toString());
     }

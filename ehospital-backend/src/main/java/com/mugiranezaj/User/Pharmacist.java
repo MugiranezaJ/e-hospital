@@ -1,6 +1,8 @@
 package com.mugiranezaj.User;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.json.JSONArray;
@@ -36,6 +38,7 @@ public class Pharmacist extends User {
     }
 
     private static Map<String, Pharmacist> pharmacistMap = new LinkedHashMap<>();
+    public static List<String> myPatients = new ArrayList<>();
 
     @Override
     public JSONObject register() {
@@ -135,4 +138,29 @@ public class Pharmacist extends User {
         fileWriter.close();
     }
 
+    public boolean getAccess(String added_user) {
+        System.out.println(Patient.patientMap.toString() + Physician.physicianMap.toString());
+        if (Patient.patientMap.containsKey(added_user)) {
+            Patient user = Patient.patientMap.get(added_user);
+            System.out.print(Patient.patientMap.values());
+            System.out.print(user);
+            myPatients.add(user.getUsername());
+            return true;
+        }
+        return false;
+    }
+
+    public JSONArray getPatients() {
+        JSONArray jsonArray = new JSONArray();
+        for (String _user : myPatients) {
+            JSONObject obj = new JSONObject(Patient.patientMap.get(_user));
+            obj.remove("allPatient");
+            jsonArray.put(obj);
+        }
+        // for (String user : myPatients) {
+        // jsonArray.put(new JSONObject(user));
+        // }
+        // jsonArray.put(new JSONObject(myPatients.values()));
+        return jsonArray;
+    }
 }

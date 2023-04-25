@@ -14,8 +14,8 @@ import org.json.JSONObject;
 import com.mugiranezaj.User.Patient;
 import com.mugiranezaj.User.Physician;
 
-@WebServlet("/access/grant")
-public class Access extends HttpServlet {
+@WebServlet("/physician/patients")
+public class PatientsForPhysicians extends HttpServlet {
     JSONObject json, jsonResponse;
 
     @Override
@@ -28,9 +28,9 @@ public class Access extends HttpServlet {
         // String userType = json.optString("userType", "");
         String user = json.optString("user", "");
 
-        // Patient patient = new Patient();
-        Physician physician = new Physician();
-        if (physician.getAccess(user)) {
+        Patient patient = new Patient();
+        // Physician physician = new Physician()
+        if (patient.grantPhysiciansAccess(user)) {
             response.setStatus(200);
             jsonResponse.put("status", 200);
             jsonResponse.put("message", "access granted");
@@ -39,7 +39,7 @@ public class Access extends HttpServlet {
             jsonResponse.put("status", 404);
             jsonResponse.put("message", "user does not exist");
         }
-        // System.out.println(physician.getPatients());
+        System.out.println(patient.getPhysiciansWithAccess());
 
         response.getWriter().write(jsonResponse.toString());
     }
@@ -49,24 +49,21 @@ public class Access extends HttpServlet {
             throws ServletException, IOException {
         jsonResponse = new JSONObject();
         response.setContentType("application/json");
-        // String requestBody = request.getReader().lines().collect(Collectors.joining());
+        // String requestBody =
+        // request.getReader().lines().collect(Collectors.joining());
         // json = new JSONObject(requestBody);
-        String userType = request.getParameter("userType");
-        System.out.println("usertype: " + userType);
+        // String userType = json.optString("userType", "");
         // String user = json.optString("user", "");
 
-        // Patient patient = new Patient();
-        Physician physician = new Physician();
+        Patient patient = new Patient();
 
-        if (userType.equals("physician")) {
-            response.setStatus(200);
-            jsonResponse.put("status", 200);
-            jsonResponse.put("data", physician.getPatients());
-            // jsonResponse.put("data", patient.getPhysiciansWithAccess());
-        } else {
-            jsonResponse.put("message", "to be implemented");
-        }
-        System.out.println(physician.getPatients());
+        if(Patient.physiciansWithAccess.containsKey(patient))
+
+        response.setStatus(200);
+        jsonResponse.put("status", 200);
+        jsonResponse.put("data", patient.getPhysiciansWithAccess());
+
+        System.out.println(patient.getPhysiciansWithAccess());
 
         response.getWriter().write(jsonResponse.toString());
     }

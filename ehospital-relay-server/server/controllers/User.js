@@ -81,9 +81,10 @@ export class User {
   };
 
   static getUsersWithGrantedAccess = async (req, res, next) => {
+    console.log(req.query?.userType)
     try {
       axios
-        .get("/access/grant")
+        .get(`/access/grant?userType=${req.query?.userType}`)
         .then((response) => {
           return res.status(response.status).json(response.data);
         })

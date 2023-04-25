@@ -1,6 +1,8 @@
 package com.mugiranezaj.User;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.json.JSONArray;
@@ -33,7 +35,7 @@ public class Physician extends User {
     }
 
     public static Map<String, Physician> physicianMap = new LinkedHashMap<>();
-    public static Map<String, User> myPatients = new LinkedHashMap<>();
+    public static List<String> myPatients = new ArrayList<>();
 
     @Override
     public JSONObject register() {
@@ -125,7 +127,7 @@ public class Physician extends User {
             Patient user = Patient.patientMap.get(added_user);
             System.out.print(Patient.patientMap.values());
             System.out.print(user);
-            myPatients.put(user.getUsername(), user);
+            myPatients.add(user.getUsername());
             return true;
         }
         return false;
@@ -141,10 +143,15 @@ public class Physician extends User {
 
     public JSONArray getPatients() {
         JSONArray jsonArray = new JSONArray();
-        for (User user : myPatients.values()) {
-            jsonArray.put(new JSONObject(user).remove("allPatient"));
+        for (String _user : myPatients) {
+            JSONObject obj = new JSONObject(Patient.patientMap.get(_user));
+            obj.remove("allPatient");
+            jsonArray.put(obj);
         }
-        jsonArray.put(new JSONObject(myPatients.values()));
-        return jsonArray.getJSONArray(0);
+        // for (String user : myPatients) {
+        // jsonArray.put(new JSONObject(user));
+        // }
+        // jsonArray.put(new JSONObject(myPatients.values()));
+        return jsonArray;
     }
 }

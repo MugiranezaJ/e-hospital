@@ -11,6 +11,7 @@ const authSlice = createSlice({
     user: {},
     physicians: {},
     pharmacists: {},
+    usersWithGrantedAccess: {},
     grantAccess: null,
     response: null,
     status: "",
@@ -60,6 +61,9 @@ const authSlice = createSlice({
     },
     setGrantAccess(state, action) {
       state.grantAccess = action.payload;
+    },
+    setUsersWithGrantedAccess(state, action) {
+      state.usersWithGrantedAccess = action.payload;
     },
   },
 });

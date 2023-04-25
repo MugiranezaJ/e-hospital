@@ -1,6 +1,6 @@
 import CustomTextInput from "./CustomTextInput";
 
-const PatientsForPhysician = ({ username }) => {
+const PatientsForPhysician = ({ username, patient }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.target);
@@ -10,13 +10,11 @@ const PatientsForPhysician = ({ username }) => {
   };
   return (
     <div className="bg-white shadow-lg rounded-lg p-6  space-y-4">
-      <p className="font-semibold capitalize">{"patients name"}</p>
+      <p className="font-semibold capitalize">{patient?.name}</p>
       <div>
         <p className="capitalize">{"symptoms"}</p>
         <p class="font-mono text-gray-700 bg-slate-100 p-2 rounded-md border">
-          This is some code-like text that
-          <br />
-          preserves whitespace and line breaks.
+          {patient?.symptoms}
         </p>
       </div>
 

@@ -30,9 +30,9 @@ public class Prescription extends HttpServlet {
         String patientId = json.optString("patientId", "");
         String prescriptions = json.optString("prescriptions", "");
 
-        if (!Patient.patientAccessManager.contains(doctor)) {
+        if (!Patient.physiciansWithAccess.containsKey(doctor)) {
             response.setStatus(401);
-            jsonResponse.put("message", "An Authorized");
+            jsonResponse.put("message", "Un Authorized");
             response.getWriter().write(jsonResponse.toString());
         } else {
 

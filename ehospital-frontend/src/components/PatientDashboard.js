@@ -3,9 +3,11 @@ import PhysicianCard from "./PhysicianCard.js";
 import {
   getPharmacistsAction,
   getPhysiciansAction,
+  getUsersWithGrantedAccessAction,
 } from "../store/auth/authActions.js";
 import { useDispatch, useSelector } from "react-redux";
 import PatientsForPhysician from "./PatientsForPhysician.js";
+import CSVViewer from "./CSVViewer.js";
 
 function PatientDashboard() {
   const { auth } = useSelector((state) => state);
@@ -17,6 +19,8 @@ function PatientDashboard() {
     getPharmacistsAction({ userType: "pharmacist" })(dispatch);
     const localUser = localStorage.getItem("euser");
     if (localUser) setUser(JSON.parse(localUser));
+
+    getUsersWithGrantedAccessAction({})(dispatch);
   }, [dispatch]);
 
   return (
@@ -77,16 +81,26 @@ function PatientDashboard() {
         </div>
       )}
 
-      {user?.role === "physician" && (
+      {["physician"].includes(user?.role) && (
         <div className="">
           <p className="text-gray-500 font-thin text-3xl mb-3">My Patients </p>
-          <div className="space-y-2">
-            {Array.from({ length: 4 }).map((patient, _index) => (
-              <PatientsForPhysician username={patient?.username} />
-            ))}
+          <div className="flex flex-wrap gap-2">
+            {auth?.usersWithGrantedAccess?.data &&
+              Object.values(auth?.usersWithGrantedAccess?.data)?.map(
+                (patient, _index) => (
+                  <PatientsForPhysician
+                    username={patient?.username}
+                    patient={patient}
+                  />
+                )
+              )}
           </div>
         </div>
       )}
+      {["pharmacist", "physician"].includes(user?.role) && <div>
+        <p className="text-gray-500 font-thin text-3xl mb-3">My Patients </p>
+        <CSVViewer />
+      </div>}
     </div>
   );
 }

@@ -11,6 +11,9 @@ import org.json.JSONObject;
 
 public class Patient extends User {
     private String username;
+    private String symptoms;
+    private String medecine;
+    User user;
     // private String role = "patient";
     // private String[] permitted;
 
@@ -18,16 +21,30 @@ public class Patient extends User {
         return this.username;
     }
 
+    public String getSymptoms() {
+        return this.symptoms;
+    }
+
+    public String getMedecine() {
+        return this.medecine;
+    }
+
+    public void setMedecine(String medecine) {
+        this.medecine = medecine;
+    }
+
     // public String[] getPermitted() {
     // return this.permitted;
     // }
 
-    public Patient(String id, String username, String password, String name, int age, String gender, String role) {
+    public Patient(String id, String username, String password, String name, int age, String gender, String symptoms,
+            String role) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.name = name;
         this.age = age;
+        this.symptoms = "Head ache, sometimes nosea, abdomino pain and some others";
         this.gender = gender;
         this.role = "patient";
     }
@@ -41,7 +58,8 @@ public class Patient extends User {
     }
 
     public static Map<String, Patient> patientMap = new LinkedHashMap<>();
-    public static List<String> patientAccessManager = new ArrayList<>();
+    public static Map<String, Pharmacist> pharmacistsWithAccess = new LinkedHashMap<>();
+    public static Map<String, User> physiciansWithAccess = new LinkedHashMap<>();
     public static Map<String, List<String>> patientDiseases = new HashMap<>();
 
     @Override
@@ -68,7 +86,7 @@ public class Patient extends User {
         }
 
         // save the user
-        patientMap.put(this.username, new Patient(id, username, password, name, age, gender, role));
+        patientMap.put(this.username, new Patient(id, username, password, name, age, gender, symptoms, role));
         System.out.println("Users: " + patientMap);
 
         // return response
@@ -115,6 +133,7 @@ public class Patient extends User {
                 ", username:'" + username + '\'' +
                 ", gender:'" + gender + '\'' +
                 ", age:" + age +
+                ", symptoms:" + symptoms +
                 ", role:'" + role + '\'' +
                 '}';
     }
@@ -127,23 +146,40 @@ public class Patient extends User {
             patientJson.put("username", patient.getUsername());
             patientJson.put("gender", patient.getGender());
             patientJson.put("age", patient.getAge());
+            patientJson.put("symptoms", patient.getSymptoms());
             jsonArray.put(patientJson);
         }
         return jsonArray;
     }
 
-    public boolean grantAccess(String user) {
+    public boolean grantPhysiciansAccess(String added_user) {
         System.out.println(patientMap.toString() + Physician.physicianMap.toString());
-        if (patientMap.containsKey(user) || Physician.physicianMap.containsKey(user))
-            return patientAccessManager.add(user);
+        if (patientMap.containsKey(added_user) || Physician.physicianMap.containsKey(added_user)) {
+            Physician user = Physician.physicianMap.get(added_user);
+            physiciansWithAccess.put(user.getEmail(), user);
+            return true;
+        }
         return false;
     }
 
-    public boolean hasAccess(String user) {
-        return patientAccessManager.contains(user);
+    public boolean physicianHasAccess(String user) {
+        return physiciansWithAccess.containsKey(user);
     }
 
-    public List<String> getUsersWithAccess() {
-        return patientAccessManager;
+    public JSONArray getPhysiciansWithAccess() {
+        // JSONObject jsonObject = new JSONObject();
+        System.out.println("-------");
+        System.out.println(physiciansWithAccess);
+        System.out.println("-------");
+        JSONArray jsonArray = new JSONArray();
+        for (User user_ : physiciansWithAccess.values()) {
+            JSONObject object = new JSONObject(user_);
+            object.remove("allPhysicians");
+            jsonArray.put(object);
+        }
+        // jsonArray.put(new JSONObject(user));
+        // jsonObject.put("usersWithAccess", jsonArray);
+        return jsonArray;
     }
+
 }

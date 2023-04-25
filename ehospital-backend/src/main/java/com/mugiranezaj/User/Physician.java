@@ -33,6 +33,7 @@ public class Physician extends User {
     }
 
     public static Map<String, Physician> physicianMap = new LinkedHashMap<>();
+    public static Map<String, User> myPatients = new LinkedHashMap<>();
 
     @Override
     public JSONObject register() {
@@ -46,7 +47,7 @@ public class Physician extends User {
 
         if (this.password.length() < 7 || this.password.length() > 8) {
             response.put("status", 400);
-            response.put("message", "password must be between 4 and 6 characters");
+            response.put("message", "password must be between 7 and 8 characters");
             return response;
         }
 
@@ -116,5 +117,34 @@ public class Physician extends User {
             jsonArray.put(patientJson);
         }
         return jsonArray;
+    }
+
+    public boolean getAccess(String added_user) {
+        System.out.println(Patient.patientMap.toString() + Physician.physicianMap.toString());
+        if (Patient.patientMap.containsKey(added_user)) {
+            Patient user = Patient.patientMap.get(added_user);
+            System.out.print(Patient.patientMap.values());
+            System.out.print(user);
+            myPatients.put(user.getUsername(), user);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean giveMedecines(String patient, String medecine) {
+        if (Patient.patientMap.containsKey(patient)) {
+            Patient user = Patient.patientMap.get(patient);
+            user.setMedecine(medecine);
+        }
+        return true;
+    }
+
+    public JSONArray getPatients() {
+        JSONArray jsonArray = new JSONArray();
+        for (User user : myPatients.values()) {
+            jsonArray.put(new JSONObject(user).remove("allPatient"));
+        }
+        jsonArray.put(new JSONObject(myPatients.values()));
+        return jsonArray.getJSONArray(0);
     }
 }

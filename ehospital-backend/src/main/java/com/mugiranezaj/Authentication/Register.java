@@ -66,6 +66,7 @@ public class Register extends HttpServlet {
             String phone = json.optString("phone", "");
             int age = json.optInt("age", 0);
             String role = json.optString("role", "");
+            String symptoms = json.optString("symptoms", "");
             String id = UUID.randomUUID().toString();
             UserValidation validation = new UserValidation();
 
@@ -92,7 +93,7 @@ public class Register extends HttpServlet {
                         jsonResponse = user.register();
                         break;
                     case "patient":
-                        user = new Patient(id, username, password, name, age, gender, role);
+                        user = new Patient(id, username, password, name, age, gender, symptoms, role);
                         jsonResponse = user.register();
                         break;
                     case "physician":

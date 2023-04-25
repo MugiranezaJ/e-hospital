@@ -65,3 +65,16 @@ export const grantAccessService = async (data) => {
     return err?.response;
   }
 };
+
+export const getUsersWithGrantedAccessService = async (_data) => {
+  try {
+    const res = await axios({
+      method: "GET",
+      url: `${SERVER_URL}/access/grant`,
+      // data: data,
+    });
+    return res;
+  } catch (err) {
+    return err?.response;
+  }
+};

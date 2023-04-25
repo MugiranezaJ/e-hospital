@@ -2,6 +2,7 @@
 import { authActions } from ".";
 import {
   getUsersService,
+  getUsersWithGrantedAccessService,
   grantAccessService,
   loginService,
   profileService,
@@ -122,6 +123,25 @@ export const grantAccessAction = (data) => {
     } catch (err) {
       // dispatch(authActions.login({ isAuth: false }));
       // dispatch(authActions.setIsFetching(false));
+      console.log(err);
+    }
+  };
+};
+
+export const getUsersWithGrantedAccessAction = (data) => {
+  return async (dispatch) => {
+    try {
+      dispatch(authActions.setIsFetching(true));
+      const res = await getUsersWithGrantedAccessService(data);
+      dispatch(authActions.setUsersWithGrantedAccess(res?.data));
+      if (res?.status === 200) {
+        // store.set("authToken", res?.data?.data?.token);
+        // store.set("user", res?.data?.data?.user);
+        dispatch(authActions.setIsFetching(false));
+      } else {
+        dispatch(authActions.setIsFetching(false));
+      }
+    } catch (err) {
       console.log(err);
     }
   };

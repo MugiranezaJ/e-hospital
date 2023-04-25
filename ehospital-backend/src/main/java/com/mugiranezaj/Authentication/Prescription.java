@@ -16,7 +16,7 @@ import org.json.JSONObject;
 import com.mugiranezaj.User.Patient;
 import com.mugiranezaj.User.Physician;
 
-@WebServlet("/prescriptions")
+@WebServlet("/diagnose")
 public class Prescription extends HttpServlet {
     JSONObject json, jsonResponse;
 
@@ -29,27 +29,33 @@ public class Prescription extends HttpServlet {
         json = new JSONObject(requestBody);
         String doctor = json.optString("doctor", "");
         String patientId = json.optString("patientId", "");
-        String prescriptions = json.optString("prescriptions", "");
+        String disease = json.optString("disease", "");
 
         if (!Physician.myPatients.contains(patientId)) {
             response.setStatus(401);
-            jsonResponse.put("message", "Un Authorized");
+            jsonResponse.put("message", "Unauthorized");
             response.getWriter().write(jsonResponse.toString());
         } else {
-
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("doctor", doctor);
+            jsonObject.put("disease", disease);
             if (Patient.patientMedecines.containsKey(patientId)) {
-                Patient.patientMedecines.get(patientId).add(prescriptions);
+                Patient.patientMedecines.get(patientId).put("disease", disease);
             } else {
                 List<String> diseases = new ArrayList<>();
-                diseases.add(prescriptions);
-                Patient.patientMedecines.put(patientId, diseases);
+                diseases.add(disease);
+
+                Patient.patientMedecines.put(patientId, jsonObject);
             }
+            System.out.println(Patient.patientMedecines);
+            jsonResponse.put("status", 200);
+            jsonResponse.put("patient", patientId);
+            jsonResponse.put("doctor", doctor);
+            jsonResponse.put("disease", disease);
+            jsonResponse.put("message", "added");
 
-            jsonResponse.put("message", "Prescriptions added successfully");
-            jsonResponse.put("data", Patient.patientMedecines.get(patientId));
-
-            response.getWriter().write(jsonResponse.toString());
         }
+        response.getWriter().write(jsonResponse.toString());
     }
 
     @Override
@@ -57,12 +63,13 @@ public class Prescription extends HttpServlet {
             throws ServletException, IOException {
         jsonResponse = new JSONObject();
         response.setContentType("application/json");
-        String requestBody = request.getReader().lines().collect(Collectors.joining());
-        json = new JSONObject(requestBody);
-        String patientId = json.optString("patientId", "");
+        // String requestBody = request.getReader().lines().collect(Collectors.joining());
+        // json = new JSONObject(requestBody);
+        // String patientId = json.optString("patientId", "")
+        String patientId = request.getParameter("patientId");
 
         jsonResponse.put("status", 200);
-        // jsonResponse.put("message", "Prescriptions added successfully");
+        // jsonResponse.put("message", "disease added successfully");
         jsonResponse.put("data", Patient.patientMedecines.get(patientId));
 
         response.getWriter().write(jsonResponse.toString());

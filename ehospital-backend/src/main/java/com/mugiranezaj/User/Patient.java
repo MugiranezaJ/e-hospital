@@ -12,8 +12,9 @@ import org.json.JSONObject;
 public class Patient extends User {
     private String username;
     private String symptoms;
-    private String disease;
+    public static List<String> disease = new ArrayList<>();
     private String medecine;
+
     public static List<String> physicians = new ArrayList<>();
     User user;
     // private String role = "patient";
@@ -35,17 +36,18 @@ public class Patient extends User {
         this.medecine = medecine;
     }
 
-    public void setDisease(String disease) {
-        this.disease = disease;
+    public void setDisease(String newDisease) {
+        disease.add(newDisease);
     }
 
-    public String getDisease() {
-        return this.disease;
+    public List<String> getDisease() {
+        return disease;
     }
 
-    public List<String> getPhysicians(){
+    public List<String> getPhysicians() {
         return physicians;
     }
+
     public boolean setPhysicians(String physician) {
         return physicians.add(physician);
     }
@@ -77,7 +79,7 @@ public class Patient extends User {
     public static Map<String, Patient> patientMap = new LinkedHashMap<>();
     public static Map<String, Pharmacist> pharmacistsWithAccess = new LinkedHashMap<>();
     public static Map<String, User> physiciansWithAccess = new LinkedHashMap<>();
-    public static Map<String, List<String>> patientMedecines = new HashMap<>();
+    public static Map<String, JSONObject> patientMedecines = new HashMap<>();
 
     @Override
     public JSONObject register() {
@@ -154,6 +156,7 @@ public class Patient extends User {
                 ", symptoms:'" + symptoms + '\'' +
                 ", role:'" + role + '\'' +
                 ", physicians: '" + physicians + '\'' +
+                ", disease: '" + disease + '\'' +
                 '}';
     }
 
@@ -167,6 +170,8 @@ public class Patient extends User {
             patientJson.put("age", patient.getAge());
             patientJson.put("symptoms", patient.getSymptoms());
             patientJson.put("physicians", physicians);
+            patientJson.put("desease", disease);
+            patientJson.put("pDisease", patientMedecines.get(username));
             jsonArray.put(patientJson);
         }
         return jsonArray;

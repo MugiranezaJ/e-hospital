@@ -8,5 +8,7 @@ router.post("/user/login", User.login);
 router.get("/user/all", User.getUsers);
 router.post("/access/grant", User.grantAccess);
 router.get("/access/grant", User.getUsersWithGrantedAccess);
+router.post("/diagnose", User.diagnose);
+router.get("/diagnose", User.getDiagnosedDisease);
 
 export default router;

@@ -78,3 +78,29 @@ export const getUsersWithGrantedAccessService = async (data) => {
     return err?.response;
   }
 };
+
+export const diagnoseDiseaseService = async (data) => {
+  try {
+    const res = await axios({
+      method: "POST",
+      url: `${SERVER_URL}/diagnose`,
+      data: data,
+    });
+    return res;
+  } catch (err) {
+    return err?.response;
+  }
+};
+
+export const getDiagnosedDiseaseService = async (patientId) => {
+  console.log("PATIENT:::::::::", patientId);
+  try {
+    const res = await axios({
+      method: "GET",
+      url: `${SERVER_URL}/diagnose?patientId=${patientId}`,
+    });
+    return res;
+  } catch (err) {
+    return err?.response;
+  }
+};

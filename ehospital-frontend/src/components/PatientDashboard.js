@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import PhysicianCard from "./PhysicianCard.js";
 import {
+  getDiagnosedDiseaseAction,
   getPharmacistsAction,
   getPhysiciansAction,
   getPhysiciansWithGrantedAccessAction,
@@ -19,11 +20,13 @@ function PatientDashboard() {
     getPhysiciansAction({ userType: "physician" })(dispatch);
     getPharmacistsAction({ userType: "pharmacist" })(dispatch);
     getPhysiciansWithGrantedAccessAction({ userType: "physician" })(dispatch);
+    getDiagnosedDiseaseAction(user?.username)(dispatch);
+    console.log("Username", user?.username);
     const localUser = localStorage.getItem("euser");
     if (localUser) setUser(JSON.parse(localUser));
 
     getUsersWithGrantedAccessAction({})(dispatch);
-  }, [dispatch]);
+  }, [dispatch, user?.username]);
 
   // console.log(auth?.physiciansWithAcces?.data?.map((user) => user?.username))
 
@@ -37,7 +40,7 @@ function PatientDashboard() {
       item.physicians.includes(user?.email) &&
       self.findIndex((t) => t.physicians.includes(user?.email)) === index
   );
-  console.log("filtered", filteredData)
+  console.log("filtered", filteredData);
 
   return (
     <div className="flex flex-col pl-56 xmin-h-screen px-10 py-10 gap-y-10">
@@ -103,10 +106,7 @@ function PatientDashboard() {
           <p className="text-gray-500 font-thin text-3xl mb-3">My Patients </p>
           <div className="flex flex-wrap gap-2">
             {filteredData?.map((patient, _index) => (
-              <PatientsForPhysician
-                // username={patient?.username}
-                patient={patient}
-              />
+              <PatientsForPhysician doctor={user?.email} patient={patient} />
             ))}
           </div>
         </div>
@@ -117,6 +117,13 @@ function PatientDashboard() {
           <CSVViewer />
         </div>
       )}
+
+      <div>
+        <p className="text-gray-500 font-thin text-3xl mb-3">
+          Replies from Physicians{" "}
+        </p>
+        <div className="py-5 px-2 bg-white rounded-lg font-mono border w-80"><span className="capitalize">{auth?.diagnosis?.data?.disease}</span> {auth?.diagnosis?.data?.doctor}</div>
+      </div>
     </div>
   );
 }

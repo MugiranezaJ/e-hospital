@@ -1,12 +1,19 @@
+import { useDispatch, useSelector } from "react-redux";
 import CustomTextInput from "./CustomTextInput";
+import { diagnoseDiseaseAction } from "../store/auth/authActions";
 
-const PatientsForPhysician = ({ username, patient }) => {
+const PatientsForPhysician = ({ doctor, patient }) => {
+  const dispatch = useDispatch();
+  const { auth } = useSelector((state) => state);
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.target);
+    const values = Object.fromEntries(data);
 
     // await registerAction(Object.fromEntries(data))(dispatch);
-    console.log(Object.fromEntries(data));
+    console.log(values);
+    await diagnoseDiseaseAction(values)(dispatch);
+    event?.target?.reset();
   };
   return (
     <div className="bg-white shadow-lg rounded-lg p-6  space-y-4">
@@ -17,6 +24,13 @@ const PatientsForPhysician = ({ username, patient }) => {
           {patient?.symptoms}
         </p>
       </div>
+      {auth?.diagnosis?.disease && (
+        <div>
+          <p className="text-right italic font-mono text-gray-700 bg-slate-100 p-2 rounded-md border">
+            {auth?.diagnosis?.disease} - {doctor}
+          </p>
+        </div>
+      )}
 
       <form
         method="post"
@@ -25,16 +39,23 @@ const PatientsForPhysician = ({ username, patient }) => {
       >
         <CustomTextInput
           type="text"
-          name="patient"
-          value={username}
+          name="doctor"
+          value={doctor}
           className="hidden"
           placeholder="Enter medecine here"
         />
         <CustomTextInput
           type="text"
-          name="medecine"
-          label="Medecine"
+          name="patientId"
+          value={patient?.username}
+          className="hidden"
           placeholder="Enter medecine here"
+        />
+        <CustomTextInput
+          type="text"
+          name="disease"
+          label="Disease"
+          placeholder="Enter disease here"
         />
 
         <div className="flex justify-between items-center">
@@ -44,6 +65,7 @@ const PatientsForPhysician = ({ username, patient }) => {
           >
             Send
           </button>
+          {auth?.diagnosis?.status === 200 && <span>{"Sent!"}</span>}
         </div>
       </form>
     </div>

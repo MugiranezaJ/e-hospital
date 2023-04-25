@@ -9,6 +9,7 @@ const authSlice = createSlice({
     token: "",
     users: {},
     user: {},
+    diagnosis: {},
     physicians: {},
     pharmacists: {},
     usersWithGrantedAccess: {},
@@ -68,6 +69,9 @@ const authSlice = createSlice({
     },
     setphysiciansWithAcces(state, action) {
       state.physiciansWithAcces = action.payload;
+    },
+    setDiagnosis(state, action) {
+      state.diagnosis = action.payload;
     },
   },
 });

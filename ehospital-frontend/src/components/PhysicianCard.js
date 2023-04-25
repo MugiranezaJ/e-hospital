@@ -34,6 +34,7 @@ const UserCard = ({ name, user, onClick, patient }) => {
         <div className="text-xl font-medium">{user?.name}</div>
         <div className="text-gray-500">{user?.gender}</div>
         <div className="text-gray-500">{user?.age}</div>
+        <div className="text-gray-500">{user?.email}</div>
       </div>
       <button
         onClick={handleGrantAccess}

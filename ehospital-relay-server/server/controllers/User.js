@@ -50,6 +50,8 @@ export class User {
           return res.status(response.status).json(response.data);
         })
         .catch((err) => {
+          console.log("...............................");
+          console.log(err);
           if (err.response == undefined)
             return res.status(500).json({
               message: "there was error connecting to the server",

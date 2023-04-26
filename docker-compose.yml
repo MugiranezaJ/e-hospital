@@ -1,0 +1,18 @@
+version: "3"
+services:
+  frontend:
+    build: ./ehospital-frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - relay-server
+  relay-server:
+    build: ./ehospital-relay-server
+    ports:
+      - "4200:4200"
+    depends_on:
+      - ehospital-backend
+  ehospital-backend:
+    build: ./ehospital-backend
+    ports:
+      - "8080:8080"

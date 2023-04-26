@@ -158,5 +158,23 @@ export class User {
       next(error);
     }
   };
-}
 
+  static getMedecines = async (req, res, next) => {
+    try {
+      axios
+        .get(`/medecines`)
+        .then((response) => {
+          return res.status(response.status).json(response.data);
+        })
+        .catch((err) => {
+          if (err.response == undefined)
+            return res.status(500).json({
+              message: "there was error connecting to the server",
+            });
+          return res.status(err.response.status).json(err.response.data);
+        });
+    } catch (error) {
+      next(error);
+    }
+  };
+}

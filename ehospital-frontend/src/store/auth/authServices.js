@@ -117,3 +117,15 @@ export const addMedecinesService = async (data) => {
     return err?.response;
   }
 };
+
+export const getMedecinesDataService = async () => {
+  try {
+    const res = await axios({
+      method: "GET",
+      url: `${SERVER_URL}/medecines`,
+    });
+    return res;
+  } catch (err) {
+    return err?.response;
+  }
+};

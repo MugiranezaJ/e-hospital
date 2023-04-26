@@ -11,5 +11,6 @@ router.get("/access/grant", User.getUsersWithGrantedAccess);
 router.post("/diagnose", User.diagnose);
 router.get("/diagnose", User.getDiagnosedDisease);
 router.post("/medecines", User.addMedecine);
+router.get("/medecines", User.getMedecines);
 
 export default router;

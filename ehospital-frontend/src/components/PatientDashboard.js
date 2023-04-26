@@ -3,6 +3,7 @@ import PhysicianCard from "./PhysicianCard.js";
 import {
   addMedecinesAction,
   getDiagnosedDiseaseAction,
+  getMedecinesDataAction,
   getMyPatientsPharmacistAction,
   getPharmacistsAction,
   getPhysiciansAction,
@@ -11,8 +12,8 @@ import {
 } from "../store/auth/authActions.js";
 import { useDispatch, useSelector } from "react-redux";
 import PatientsForPhysician from "./PatientsForPhysician.js";
-import CSVViewer from "./CSVViewer.js";
 import CustomTextInput from "./CustomTextInput.js";
+import CsvFile from "./CsvFile.js";
 
 function PatientDashboard() {
   const { auth } = useSelector((state) => state);
@@ -25,14 +26,13 @@ function PatientDashboard() {
     getPhysiciansWithGrantedAccessAction({ userType: "physician" })(dispatch);
     getMyPatientsPharmacistAction({ userType: "pharmacist" })(dispatch);
     getDiagnosedDiseaseAction(user?.username)(dispatch);
-    console.log("Username", user?.username);
+
+    getMedecinesDataAction()(dispatch);
     const localUser = localStorage.getItem("euser");
     if (localUser) setUser(JSON.parse(localUser));
 
     getUsersWithGrantedAccessAction({})(dispatch);
   }, [dispatch, user?.username]);
-
-  // console.log(auth?.physiciansWithAcces?.data?.map((user) => user?.username))
 
   console.log(
     auth?.physiciansWithAcces?.data?.map((item) =>
@@ -44,7 +44,6 @@ function PatientDashboard() {
       item.physicians.includes(user?.email) &&
       self.findIndex((t) => t.physicians.includes(user?.email)) === index
   );
-  // console.log("filtered", filteredData);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -55,13 +54,14 @@ function PatientDashboard() {
     await addMedecinesAction(values)(dispatch);
     event?.target?.reset();
   };
-
   return (
     <div className="flex flex-col pl-56 xmin-h-screen px-10 py-10 gap-y-10">
       <div className="font-semibold">
         <p className="text-3xl">Hello {user?.name ?? "Anonymous"},</p>
         <p className=" text-gray-500 font-thin">How are you doing today!</p>
       </div>
+
+      {/* Available physicians and  */}
       {user?.role === "patient" && (
         <div className="flex gap-10 ">
           <div className="max-w-lg mx-auto">
@@ -115,6 +115,7 @@ function PatientDashboard() {
         </div>
       )}
 
+      {/* Patients who granted access to physician */}
       {["physician"].includes(user?.role) && (
         <div className="">
           <p className="text-gray-500 font-thin text-3xl mb-3">My Patients </p>
@@ -126,6 +127,7 @@ function PatientDashboard() {
         </div>
       )}
 
+      {/* Physicians reply */}
       {["patient"].includes(user?.role) && (
         <div>
           <p className="text-gray-500 font-thin text-3xl mb-3">
@@ -138,6 +140,7 @@ function PatientDashboard() {
         </div>
       )}
 
+      {/* Patients to give medecines */}
       {["pharmacist"].includes(user?.role) && (
         <div className=" ">
           <p className="text-gray-500 font-thin text-3xl mb-3 capitalize">
@@ -201,10 +204,18 @@ function PatientDashboard() {
         </div>
       )}
 
-      {["pharmacist", "physician"].includes(user?.role) && (
+      {/* View csv file */}
+      {["patient"].includes(user?.role) && (
         <div>
-          <p className="text-gray-500 font-thin text-3xl mb-3">My Patients </p>
-          <CSVViewer />
+          {auth?.medecinesData?.length > 0 && (
+            <div className="w-[730px]">
+              <CsvFile
+                medicinesData={
+                  "med-name,med-price,med-expiration\nGinger,200.00,22-02-22023\nFiber,400.00,23-02-22023\nginger,200.00,02-03-2020\nGinger,200.00,23-02-2020"
+                }
+              />
+            </div>
+          )}
         </div>
       )}
     </div>

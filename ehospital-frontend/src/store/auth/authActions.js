@@ -4,6 +4,7 @@ import {
   addMedecinesService,
   diagnoseDiseaseService,
   getDiagnosedDiseaseService,
+  getMedecinesDataService,
   getUsersService,
   getUsersWithGrantedAccessService,
   grantAccessService,
@@ -232,6 +233,25 @@ export const addMedecinesAction = (data) => {
       dispatch(authActions.setIsFetching(true));
       const res = await addMedecinesService(data);
       dispatch(authActions.setMedecines(res.data));
+      // console.log(">>>>>>>:: ", res);
+      if (res?.status === 200) {
+        dispatch(authActions.setIsFetching(false));
+      }
+      dispatch(authActions.setIsFetching(false));
+    } catch (err) {
+      // dispatch(authActions.login({ isAuth: false }));
+      // dispatch(authActions.setIsFetching(false));
+      console.log(err);
+    }
+  };
+};
+
+export const getMedecinesDataAction = () => {
+  return async (dispatch) => {
+    try {
+      dispatch(authActions.setIsFetching(true));
+      const res = await getMedecinesDataService();
+      dispatch(authActions.setmedecinesData(res.data));
       // console.log(">>>>>>>:: ", res);
       if (res?.status === 200) {
         dispatch(authActions.setIsFetching(false));

@@ -9,6 +9,7 @@ const RegisterForm = () => {
   const [showUsername, setShowUsername] = useState(false);
   const { auth } = useSelector((state) => state);
   const dispatch = useDispatch();
+  const isGoodRes = auth?.response?.status === 200;
 
   console.log(auth);
 
@@ -18,24 +19,24 @@ const RegisterForm = () => {
     setShowPhone(selectedRole === "pharmacist");
     setShowUsername(selectedRole === "patient");
   };
-//   const [formData, setFormData] = useState({
-//     name: "",
-//     age: "",
-//     gender: "",
-//     username: "",
-//     email: "",
-//     phone: "",
-//     role: "",
-//     password: "",
-//   });
+  //   const [formData, setFormData] = useState({
+  //     name: "",
+  //     age: "",
+  //     gender: "",
+  //     username: "",
+  //     email: "",
+  //     phone: "",
+  //     role: "",
+  //     password: "",
+  //   });
 
-//   const handleChange = (event) => {
-//     const { name, value } = event.target;
-//     setFormData((prevFormData) => ({
-//       ...prevFormData,
-//       [name]: value,
-//     }));
-//   };
+  //   const handleChange = (event) => {
+  //     const { name, value } = event.target;
+  //     setFormData((prevFormData) => ({
+  //       ...prevFormData,
+  //       [name]: value,
+  //     }));
+  //   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -103,14 +104,14 @@ const RegisterForm = () => {
           name="name"
           label="Name"
           placeholder="Enter your full name"
-        //   onChange={handleChange}
+          //   onChange={handleChange}
         />
         <CustomTextInput
           type="text"
           name="age"
           label="Age"
           placeholder="Enter your age"
-        //   onChange={handleChange}
+          //   onChange={handleChange}
         />
         <div className="mb-4">
           <label
@@ -134,7 +135,7 @@ const RegisterForm = () => {
           name="password"
           label="Password"
           placeholder="Enter your password"
-        //   onChange={handleChange}
+          //   onChange={handleChange}
         />
         <div className="flex justify-between items-center">
           <button
@@ -144,6 +145,15 @@ const RegisterForm = () => {
             Register
           </button>
         </div>
+        {auth?.response?.message && (
+          <div
+            className={`p-3 mt-5 text-white capitalize ${
+              isGoodRes ? "bg-green-500" : "bg-red-500"
+            } rounded-lg`}
+          >
+            {auth?.response?.message}
+          </div>
+        )}
       </form>
     </div>
   );

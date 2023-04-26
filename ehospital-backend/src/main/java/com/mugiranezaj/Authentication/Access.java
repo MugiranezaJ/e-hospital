@@ -50,11 +50,15 @@ public class Access extends HttpServlet {
                 jsonResponse.put("message", "user does not exist");
             }
         } else if (userType.equals("pharmacist")) {
-            if (pharmacist.getAccess(doctor, user)) {
+            if (patient.setPharmacists(doctor) && pharmacist.getAccess(user)) {
                 response.setStatus(200);
                 jsonResponse.put("status", 200);
                 jsonResponse.put("message", "access granted");
-                jsonResponse.put("data", new PatientsAccess(doctor, user));
+                // jsonResponse.put("data", new PatientsAccess(doctor, user));
+                JSONObject jObject = new JSONObject();
+                jObject.put("doctor", doctor);
+                jObject.put("user", user);
+                jsonResponse.put("data", jObject);
             } else {
                 response.setStatus(404);
                 jsonResponse.put("status", 404);

@@ -16,6 +16,7 @@ public class Patient extends User {
     private String medecine;
 
     public static List<String> physicians = new ArrayList<>();
+    public static List<String> pharmacists = new ArrayList<>();
     User user;
     // private String role = "patient";
     // private String[] permitted;
@@ -50,6 +51,14 @@ public class Patient extends User {
 
     public boolean setPhysicians(String physician) {
         return physicians.add(physician);
+    }
+
+    public List<String> getPharamacists() {
+        return pharmacists;
+    }
+
+    public boolean setPharmacists(String pharmacist) {
+        return pharmacists.add(pharmacist);
     }
 
     // public String[] getPermitted() {
@@ -170,8 +179,9 @@ public class Patient extends User {
             patientJson.put("age", patient.getAge());
             patientJson.put("symptoms", patient.getSymptoms());
             patientJson.put("physicians", physicians);
+            patientJson.put("pharmacists", pharmacists);
             patientJson.put("desease", disease);
-            patientJson.put("pDisease", patientMedecines.get(username));
+            patientJson.put("medecines", patientMedecines.get(username));
             jsonArray.put(patientJson);
         }
         return jsonArray;

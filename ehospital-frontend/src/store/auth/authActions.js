@@ -1,6 +1,7 @@
 // import store from "store";
 import { authActions } from ".";
 import {
+  addMedecinesService,
   diagnoseDiseaseService,
   getDiagnosedDiseaseService,
   getUsersService,
@@ -168,6 +169,25 @@ export const getPhysiciansWithGrantedAccessAction = (data) => {
   };
 };
 
+export const getMyPatientsPharmacistAction = (data) => {
+  return async (dispatch) => {
+    try {
+      dispatch(authActions.setIsFetching(true));
+      const res = await getUsersWithGrantedAccessService(data);
+      dispatch(authActions.setMyPatientsPharmacist(res?.data));
+      if (res?.status === 200) {
+        // store.set("authToken", res?.data?.data?.token);
+        // store.set("user", res?.data?.data?.user);
+        dispatch(authActions.setIsFetching(false));
+      } else {
+        dispatch(authActions.setIsFetching(false));
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+
 export const diagnoseDiseaseAction = (data) => {
   return async (dispatch) => {
     try {
@@ -193,6 +213,25 @@ export const getDiagnosedDiseaseAction = (patientId) => {
       dispatch(authActions.setIsFetching(true));
       const res = await getDiagnosedDiseaseService(patientId);
       dispatch(authActions.setDiagnosis(res.data));
+      // console.log(">>>>>>>:: ", res);
+      if (res?.status === 200) {
+        dispatch(authActions.setIsFetching(false));
+      }
+      dispatch(authActions.setIsFetching(false));
+    } catch (err) {
+      // dispatch(authActions.login({ isAuth: false }));
+      // dispatch(authActions.setIsFetching(false));
+      console.log(err);
+    }
+  };
+};
+
+export const addMedecinesAction = (data) => {
+  return async (dispatch) => {
+    try {
+      dispatch(authActions.setIsFetching(true));
+      const res = await addMedecinesService(data);
+      dispatch(authActions.setMedecines(res.data));
       // console.log(">>>>>>>:: ", res);
       if (res?.status === 200) {
         dispatch(authActions.setIsFetching(false));

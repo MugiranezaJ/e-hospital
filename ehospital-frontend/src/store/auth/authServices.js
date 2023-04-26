@@ -104,3 +104,16 @@ export const getDiagnosedDiseaseService = async (patientId) => {
     return err?.response;
   }
 };
+
+export const addMedecinesService = async (data) => {
+  try {
+    const res = await axios({
+      method: "POST",
+      url: `${SERVER_URL}/medecines`,
+      data: data,
+    });
+    return res;
+  } catch (err) {
+    return err?.response;
+  }
+};

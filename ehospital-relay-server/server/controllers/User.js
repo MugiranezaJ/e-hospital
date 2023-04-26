@@ -81,7 +81,7 @@ export class User {
   };
 
   static getUsersWithGrantedAccess = async (req, res, next) => {
-    console.log(req.query?.userType)
+    console.log(req.query?.userType);
     try {
       axios
         .get(`/access/grant?userType=${req.query?.userType}`)
@@ -120,8 +120,8 @@ export class User {
   };
 
   static getDiagnosedDisease = async (req, res, next) => {
-    console.log("patient", req.query)
-    console.log("patient", req.params.patientId)
+    console.log("patient", req.query);
+    console.log("patient", req.params.patientId);
     try {
       axios
         .get(`/diagnose?patientId=${req.query.patientId}`)
@@ -139,4 +139,24 @@ export class User {
       next(error);
     }
   };
+
+  static addMedecine = async (req, res, next) => {
+    try {
+      axios
+        .post("/medecines", req.body)
+        .then((response) => {
+          return res.status(response.status).json(response.data);
+        })
+        .catch((err) => {
+          if (err.response == undefined)
+            return res.status(500).json({
+              message: "there was error connecting to the server",
+            });
+          return res.status(err.response.status).json(err.response.data);
+        });
+    } catch (error) {
+      next(error);
+    }
+  };
 }
+

@@ -65,7 +65,7 @@ const PatientsForPhysician = ({ doctor, patient }) => {
           >
             Send
           </button>
-          {auth?.diagnosis?.status === 200 && <span>{"Sent!"}</span>}
+          {auth?.diagnosis?.message && <span className="text-green-500">{"Sent!"}</span>}
         </div>
       </form>
     </div>

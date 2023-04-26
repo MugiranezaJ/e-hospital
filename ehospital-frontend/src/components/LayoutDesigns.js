@@ -1,10 +1,21 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 function Header() {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    console.log("....");
+    localStorage.removeItem("euser");
+    navigate("/");
+  };
   return (
     <header className="flex items-center justify-between px-6 py-3 bg-white border-b-2 border-gray-200">
       <h1 className="text-2xl font-bold text-gray-800">Patient Dashboard</h1>
-      <button className="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-md shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+      <button
+        onClick={handleLogout}
+        className="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-md shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+      >
         Logout
       </button>
     </header>
@@ -21,30 +32,11 @@ function Footer() {
 
 function SideBar() {
   return (
-    <div className="fixed h-full bg-white text-black w-40 rounded-md flex flex-col items-center py-4">
+    <div className="fixed h-[calc(100%-110px)] bg-white text-black w-40 rounded-md flex flex-col items-center py-4 z-10">
       <div className=" h-32 w-32 flex flex-col justify-center items-center">
         <div className="bg-slate-200 w-12 h-12 rounded-lg"></div>
         <h1 className="font-thin xtext-2xl mb-6">Dashboard</h1>
       </div>
-      {/* <nav>
-        <ul>
-          <li className="mb-2">
-            <a href="#" className="hover:text-white">
-              My Profile
-            </a>
-          </li>
-          <li className="mb-2">
-            <a href="#" className="hover:text-white">
-              My Physicians
-            </a>
-          </li>
-          <li className="mb-2">
-            <a href="#" className="hover:text-white">
-              My Pharmacies
-            </a>
-          </li>
-        </ul>
-      </nav> */}
     </div>
   );
 }

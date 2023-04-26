@@ -1,6 +1,7 @@
 package com.mugiranezaj.Authentication;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.stream.Collectors;
@@ -48,25 +49,35 @@ public class Medecines extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         System.out.println("CWD: " + System.getProperty("user.dir"));
-        FileReader fileReader = new FileReader("medecines.csv");
-        BufferedReader bufferedReader = new BufferedReader(fileReader);
-        StringBuilder stringBuilder = new StringBuilder();
-        String line;
-        while ((line = bufferedReader.readLine()) != null) {
-            stringBuilder.append(line);
-            stringBuilder.append("\n");
+        jsonResponse = new JSONObject();
+        File file = new File("medecines.csv");
+        if (!file.exists()) {
+            response.setContentType("application/json");
+            jsonResponse.put("message", "No data!");
+            response.getWriter().write(jsonResponse.toString());
+        } else {
+
+            FileReader fileReader = new FileReader("medecines.csv");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            StringBuilder stringBuilder = new StringBuilder();
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                stringBuilder.append(line);
+                stringBuilder.append("\n");
+            }
+            bufferedReader.close();
+            String fileContent = stringBuilder.toString();
+
+            response.setContentType("text/csv");
+            response.setHeader("Content-Disposition", "attachment;filename=medicines.csv");
+            ServletOutputStream outputStream = response.getOutputStream();
+            outputStream.print(fileContent);
+            outputStream.flush();
+            outputStream.close();
         }
-        bufferedReader.close();
-        String fileContent = stringBuilder.toString();
-        
-        response.setContentType("text/csv");
-        response.setHeader("Content-Disposition", "attachment;filename=medicines.csv");
-        ServletOutputStream outputStream = response.getOutputStream();
-        outputStream.print(fileContent);
-        outputStream.flush();
-        outputStream.close();
     }
-    
+
 }

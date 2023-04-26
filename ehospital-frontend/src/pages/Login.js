@@ -26,15 +26,15 @@ const Login = () => {
       <div className="font-thin text-2xl tracking-wider">
         Welcome To eHospital Portal
       </div>
-      <div className="flex bg-gray-500 justify-center items-center w-fit mx-auto min-h-[700px]">
-        <div className="bg-blue-400 p-2 h-full flex items-center">
+      <div className="flex rounded-lg xborder-gray-300 bg-white xjustify-center xitems-center w-fit xmx-auto min-h-[700px] overflow-hidden divide-x">
+        <div className=" p-2 h-full flex xitems-center">
           <RegisterForm
             formData={formData}
             onInputChange={handleInputChange}
             onSubmit={handleSubmit}
           />
         </div>
-        <div className="bg-green-300 w-full p-2 h-full flex items-center">
+        <div className="w-full p-2 h-full flex xitems-center">
           <LoginForm />
         </div>
       </div>

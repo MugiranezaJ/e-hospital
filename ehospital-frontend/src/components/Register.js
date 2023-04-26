@@ -49,10 +49,10 @@ const RegisterForm = () => {
     <div className="flex flex-col justify-center items-center w-[450px]">
       <form
         method="post"
-        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full"
+        className="border rounded px-8 pt-6 pb-8 mb-4 w-full"
         onSubmit={handleSubmit}
       >
-        <h2 className="text-2xl text-center font-bold mb-8">Register</h2>
+        <h2 className="text-4xl text-center font-thin mb-8">Register</h2>
         <div className="mb-4">
           <label
             className="block text-gray-700 text-sm font-bold mb-2"

@@ -54,6 +54,7 @@ const LoginForm = () => {
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             name="role"
             onChange={handleRoleChange}
+            required
           >
             <option value="">Select role</option>
             <option value="pharmacist">Pharmacist</option>
@@ -66,6 +67,7 @@ const LoginForm = () => {
             type="email"
             name="email"
             label="Email"
+            required
             placeholder="Enter your email"
           />
         )}
@@ -74,6 +76,7 @@ const LoginForm = () => {
             type="tel"
             name="phone"
             label="Phone"
+            required
             placeholder="Enter your phone number"
           />
         )}

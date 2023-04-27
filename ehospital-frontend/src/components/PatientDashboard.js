@@ -23,20 +23,22 @@ function PatientDashboard() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    getPhysiciansAction({ userType: "physician" })(dispatch);
-    getPharmacistsAction({ userType: "pharmacist" })(dispatch);
+    user?.role === "patient" &&
+      getPhysiciansAction({ userType: "physician" })(dispatch);
+    user?.role === "patient" &&
+      getPharmacistsAction({ userType: "pharmacist" })(dispatch);
+    user?.role === "patient" &&
+      getDiagnosedDiseaseAction(user?.username)(dispatch);
+    user?.role === "patient" && getMedecinesDataAction()(dispatch);
+
     getPhysiciansWithGrantedAccessAction({ userType: "physician" })(dispatch);
     getMyPatientsPharmacistAction({ userType: "pharmacist" })(dispatch);
-    getDiagnosedDiseaseAction(user?.username)(dispatch);
 
-    getMedecinesDataAction()(dispatch);
     const localUser = localStorage.getItem("euser");
     if (localUser) setUser(JSON.parse(localUser));
 
     getUsersWithGrantedAccessAction({})(dispatch);
-  }, [dispatch, user?.username]);
-
-  if (!user) navigate("/");
+  }, [dispatch, user?.role, user?.username]);
 
   console.log(
     auth?.physiciansWithAcces?.data?.map((item) =>
@@ -58,6 +60,7 @@ function PatientDashboard() {
     await addMedecinesAction(values)(dispatch);
     event?.target?.reset();
   };
+  if (!user) return navigate("/");
   return (
     <div className="flex-1 relative flex flex-col pl-56 xmin-h-screen px-10 py-10 gap-y-10">
       <div className="font-semibold">
@@ -138,7 +141,7 @@ function PatientDashboard() {
 
         {/* Physicians reply */}
         {["patient"].includes(user?.role) && (
-          <div className="absolute top-0 right-1 p-2 bg-white h-full rounded-lg text-black">
+          <div className="absolute top-0 right-1 p-2 bg-white h-full rounded-lg text-black border shadow">
             <p className="font-thin text-3xl mb-3">Replies from Physicians </p>
             <div className="py-5 px-2 bg-white rounded-lg font-mono border w-80 shadow">
               {auth?.diagnosis?.data?.disease && (

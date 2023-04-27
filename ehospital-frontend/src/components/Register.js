@@ -63,6 +63,7 @@ const RegisterForm = () => {
             type="email"
             name="email"
             label="Email"
+            required
             placeholder="Enter your email"
           />
         )}
@@ -71,6 +72,7 @@ const RegisterForm = () => {
             type="tel"
             name="phone"
             label="Phone"
+            required
             placeholder="Enter your phone number"
           />
         )}
@@ -79,6 +81,7 @@ const RegisterForm = () => {
             type="text"
             name="username"
             label="Username"
+            required
             placeholder="Enter your username"
           />
         )}
@@ -86,12 +89,14 @@ const RegisterForm = () => {
           type="text"
           name="name"
           label="Name"
+          required
           placeholder="Enter your full name"
         />
         <CustomTextInput
           type="text"
           name="age"
           label="Age"
+          required
           placeholder="Enter your age"
         />
         <div className="mb-4">
@@ -114,6 +119,7 @@ const RegisterForm = () => {
           type="password"
           name="password"
           label="Password"
+          required
           placeholder="Enter your password"
         />
         <div className="flex justify-between items-center">

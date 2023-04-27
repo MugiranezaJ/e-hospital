@@ -1,13 +1,16 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { authActions } from "../store/auth";
 
 function Header() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleLogout = () => {
-    console.log("....");
     localStorage.removeItem("euser");
-    navigate("/");
+
+    dispatch(authActions.setLoginResponse({})) && navigate("/");
   };
   return (
     <header className="flex items-center justify-between px-6 py-3 bg-white border-b-2 border-gray-200">

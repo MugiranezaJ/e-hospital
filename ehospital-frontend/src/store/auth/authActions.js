@@ -18,7 +18,7 @@ export const registerAction = (data) => {
     try {
       dispatch(authActions.setIsFetching(true));
       const res = await registerService(data);
-      dispatch(authActions.setResponse(res?.data));
+      await dispatch(authActions.setResponse(res?.data));
       dispatch(authActions.setIsFetching(false));
     } catch (err) {
       console.log(err);
@@ -32,7 +32,7 @@ export const loginAction = (data) => {
       dispatch(authActions.setIsFetching(true));
       const res = await loginService(data);
       console.log("RES", res?.data);
-      dispatch(authActions.setResponse(res?.data));
+      dispatch(authActions.setLoginResponse(res?.data));
       if (res?.status === 200) {
         localStorage.setItem("euser", JSON.stringify(res?.data?.data));
         authActions.setUser(res?.data);

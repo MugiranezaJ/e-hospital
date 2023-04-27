@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CustomTextInput from "./CustomTextInput";
 import { useDispatch, useSelector } from "react-redux";
 import { registerAction } from "../store/auth/authActions";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const RegisterForm = () => {
   const [showEmail, setShowEmail] = useState(false);
@@ -9,9 +11,8 @@ const RegisterForm = () => {
   const [showUsername, setShowUsername] = useState(false);
   const { auth } = useSelector((state) => state);
   const dispatch = useDispatch();
+  const notify = (message) => toast(message);
   const isGoodRes = auth?.response?.status === 200;
-
-  console.log(auth);
 
   const handleRoleChange = (e) => {
     const selectedRole = e.target.value;
@@ -19,24 +20,6 @@ const RegisterForm = () => {
     setShowPhone(selectedRole === "pharmacist");
     setShowUsername(selectedRole === "patient");
   };
-  //   const [formData, setFormData] = useState({
-  //     name: "",
-  //     age: "",
-  //     gender: "",
-  //     username: "",
-  //     email: "",
-  //     phone: "",
-  //     role: "",
-  //     password: "",
-  //   });
-
-  //   const handleChange = (event) => {
-  //     const { name, value } = event.target;
-  //     setFormData((prevFormData) => ({
-  //       ...prevFormData,
-  //       [name]: value,
-  //     }));
-  //   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -45,9 +28,13 @@ const RegisterForm = () => {
     await registerAction(Object.fromEntries(data))(dispatch);
     console.log(Object.fromEntries(data));
   };
+  useEffect(() => {
+    auth?.response?.message && notify(auth?.response?.message);
+  }, [auth?.response?.message]);
 
   return (
     <div className="flex flex-col justify-center items-center w-[450px]">
+      <ToastContainer />
       <form
         method="post"
         className="border rounded px-8 pt-6 pb-8 mb-4 w-full"
@@ -78,7 +65,6 @@ const RegisterForm = () => {
             name="email"
             label="Email"
             placeholder="Enter your email"
-            // onChange={handleChange}
           />
         )}
         {showPhone && (
@@ -87,7 +73,6 @@ const RegisterForm = () => {
             name="phone"
             label="Phone"
             placeholder="Enter your phone number"
-            // onChange={handleChange}
           />
         )}
         {showUsername && (
@@ -96,7 +81,6 @@ const RegisterForm = () => {
             name="username"
             label="Username"
             placeholder="Enter your username"
-            // onChange={handleChange}
           />
         )}
         <CustomTextInput
@@ -104,14 +88,12 @@ const RegisterForm = () => {
           name="name"
           label="Name"
           placeholder="Enter your full name"
-          //   onChange={handleChange}
         />
         <CustomTextInput
           type="text"
           name="age"
           label="Age"
           placeholder="Enter your age"
-          //   onChange={handleChange}
         />
         <div className="mb-4">
           <label
@@ -123,7 +105,6 @@ const RegisterForm = () => {
           <select
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             name="gender"
-            // onChange={handleChange}
           >
             <option value="">Select gender</option>
             <option value="male">Male</option>
@@ -135,7 +116,6 @@ const RegisterForm = () => {
           name="password"
           label="Password"
           placeholder="Enter your password"
-          //   onChange={handleChange}
         />
         <div className="flex justify-between items-center">
           <button
@@ -145,15 +125,6 @@ const RegisterForm = () => {
             Register
           </button>
         </div>
-        {auth?.response?.message && (
-          <div
-            className={`p-3 mt-5 text-white capitalize ${
-              isGoodRes ? "bg-green-500" : "bg-red-500"
-            } rounded-lg`}
-          >
-            {auth?.response?.message}
-          </div>
-        )}
       </form>
     </div>
   );

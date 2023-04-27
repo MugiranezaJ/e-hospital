@@ -19,6 +19,7 @@ const authSlice = createSlice({
     physiciansWithAcces: {},
     grantAccess: null,
     response: null,
+    loginResponse: null,
     status: "",
     error: null,
     pathUrl: null,
@@ -84,6 +85,9 @@ const authSlice = createSlice({
     },
     setMyPatientsPharmacist(state, action) {
       state.myPatientsPharmacist = action.payload;
+    },
+    setLoginResponse(state, action) {
+      state.loginResponse = action.payload;
     },
   },
 });

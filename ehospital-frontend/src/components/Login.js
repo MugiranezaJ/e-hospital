@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CustomTextInput from "./CustomTextInput";
 import { useDispatch, useSelector } from "react-redux";
 import { loginAction } from "../store/auth/authActions";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const LoginForm = () => {
   const [showEmail, setShowEmail] = useState(false);
@@ -11,6 +13,7 @@ const LoginForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { auth } = useSelector((state) => state);
+  const notify = (message) => toast(message);
 
   const handleRoleChange = (e) => {
     const selectedRole = e.target.value;
@@ -25,11 +28,16 @@ const LoginForm = () => {
 
     await loginAction(Object.fromEntries(data))(dispatch);
     console.log(Object.fromEntries(data));
-    auth?.response?.status === 200 && navigate("/dashboard");
   };
+
+  useEffect(() => {
+    auth?.loginResponse?.message && notify(auth?.loginResponse?.message);
+    auth?.loginResponse?.status === 200 && navigate("/dashboard");
+  }, [auth?.loginResponse?.message, auth?.loginResponse?.status, navigate]);
 
   return (
     <div className="flex flex-col justify-center xitems-center w-[450px]">
+      <ToastContainer />
       <form
         className="bg-white borderx rounded px-8 pt-6 pb-8 mb-4 w-full"
         onSubmit={handleSubmit}

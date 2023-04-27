@@ -6,13 +6,23 @@ services:
       - "3000:3000"
     depends_on:
       - relay-server
+    networks:
+      - ehospital-network
   relay-server:
     build: ./ehospital-relay-server
     ports:
       - "4200:4200"
     depends_on:
       - ehospital-backend
+    networks:
+      - ehospital-network
   ehospital-backend:
     build: ./ehospital-backend
     ports:
       - "8080:8080"
+    networks:
+      - ehospital-network
+
+networks:
+  ehospital-network:
+    driver: bridge

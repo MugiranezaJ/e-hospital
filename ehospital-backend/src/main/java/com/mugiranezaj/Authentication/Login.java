@@ -45,14 +45,17 @@ public class Login extends HttpServlet {
             case "pharmacist":
                 user = new Pharmacist(phone, password);
                 jsonResponse = user.login();
+                resp.setStatus((int) jsonResponse.get("status"));
                 break;
             case "patient":
                 user = new Patient(username, password);
                 jsonResponse = user.login();
+                resp.setStatus((int) jsonResponse.get("status"));
                 break;
             case "physician":
                 user = new Physician(email, password);
                 jsonResponse = user.login();
+                resp.setStatus((int) jsonResponse.get("status"));
                 break;
             default:
                 System.out.println("default");

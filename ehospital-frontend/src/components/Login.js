@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import CustomTextInput from "./CustomTextInput";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginAction } from "../store/auth/authActions";
 import { useNavigate } from "react-router-dom";
 
@@ -10,6 +10,7 @@ const LoginForm = () => {
   const [showUsername, setShowUsername] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { auth } = useSelector((state) => state);
 
   const handleRoleChange = (e) => {
     const selectedRole = e.target.value;
@@ -24,7 +25,7 @@ const LoginForm = () => {
 
     await loginAction(Object.fromEntries(data))(dispatch);
     console.log(Object.fromEntries(data));
-    navigate("/dashboard");
+    auth?.response?.status === 200 && navigate("/dashboard");
   };
 
   return (

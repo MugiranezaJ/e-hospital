@@ -14,11 +14,13 @@ import { useDispatch, useSelector } from "react-redux";
 import PatientsForPhysician from "./PatientsForPhysician.js";
 import CustomTextInput from "./CustomTextInput.js";
 import CsvFile from "./CsvFile.js";
+import { useNavigate } from "react-router-dom";
 
 function PatientDashboard() {
   const { auth } = useSelector((state) => state);
   const [user, setUser] = useState();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     getPhysiciansAction({ userType: "physician" })(dispatch);
@@ -33,6 +35,8 @@ function PatientDashboard() {
 
     getUsersWithGrantedAccessAction({})(dispatch);
   }, [dispatch, user?.username]);
+
+  if (!user) navigate("/");
 
   console.log(
     auth?.physiciansWithAcces?.data?.map((item) =>

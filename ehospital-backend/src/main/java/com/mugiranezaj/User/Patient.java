@@ -148,7 +148,7 @@ public class Patient extends User {
             response.put("data", new JSONObject(patient.toString()));
             return response;
         }
-        response.put("status", 400);
+        response.put("status", 404);
         response.put("message", "user doesn't exist");
         return response;
 

@@ -96,7 +96,7 @@ public class Pharmacist extends User {
             response.put("data", new JSONObject(pharmacist.toString()));
             return response;
         }
-        response.put("status", 400);
+        response.put("status", 404);
         response.put("message", "Pharmacist doesn't exist");
         return response;
     }

@@ -38,7 +38,7 @@ public class Medecines extends HttpServlet {
             pharmacist.uploadMedicine(medName, medPrice, medExpiration);
             response.setStatus(200);
             jsonResponse.put("status", 200);
-            jsonResponse.put("message", "medecines adde successfully");
+            jsonResponse.put("message", "medecines added successfully");
         } catch (Exception e) {
             response.setStatus(500);
             jsonResponse.put("status", 500);

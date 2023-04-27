@@ -19,18 +19,7 @@ export const registerAction = (data) => {
       dispatch(authActions.setIsFetching(true));
       const res = await registerService(data);
       dispatch(authActions.setResponse(res?.data));
-      if (res?.status === 200) {
-        // store.set("authToken", res?.data?.data?.token);
-        // store.set("user", res?.data?.data?.user);
-        dispatch(
-          authActions.login({ ...res?.data, status: res?.status, isAuth: true })
-        );
-        dispatch(authActions.setIsFetching(false));
-      } else {
-        dispatch(authActions.login({ error: res.data, isAuth: false }));
-        dispatch(authActions.login({ error: null }));
-        dispatch(authActions.setIsFetching(false));
-      }
+      dispatch(authActions.setIsFetching(false));
     } catch (err) {
       console.log(err);
     }
@@ -42,11 +31,10 @@ export const loginAction = (data) => {
     try {
       dispatch(authActions.setIsFetching(true));
       const res = await loginService(data);
-      console.log("RES", res?.data?.data);
+      console.log("RES", res?.data);
+      dispatch(authActions.setResponse(res?.data));
       if (res?.status === 200) {
         localStorage.setItem("euser", JSON.stringify(res?.data?.data));
-        // store.set("authToken", res?.data?.data?.token);
-        // store.set("user", res?.data?.data?.user);
         authActions.setUser(res?.data);
         dispatch(authActions.setIsFetching(false));
       } else {

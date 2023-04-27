@@ -58,7 +58,6 @@ public class Login extends HttpServlet {
                 resp.setStatus((int) jsonResponse.get("status"));
                 break;
             default:
-                System.out.println("default");
                 jsonResponse.put("status", 400);
                 jsonResponse.put("message", "Invalid role");
         }

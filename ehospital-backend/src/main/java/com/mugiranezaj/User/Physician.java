@@ -122,11 +122,8 @@ public class Physician extends User {
     }
 
     public boolean getAccess(String added_user) {
-        System.out.println(Patient.patientMap.toString() + Physician.physicianMap.toString());
         if (Patient.patientMap.containsKey(added_user)) {
             Patient user = Patient.patientMap.get(added_user);
-            System.out.print(Patient.patientMap.values());
-            System.out.print(user);
             myPatients.add(user.getUsername());
             return true;
         }
@@ -148,10 +145,6 @@ public class Physician extends User {
             obj.remove("allPatient");
             jsonArray.put(obj);
         }
-        // for (String user : myPatients) {
-        // jsonArray.put(new JSONObject(user));
-        // }
-        // jsonArray.put(new JSONObject(myPatients.values()));
         return jsonArray;
     }
 }

@@ -12,7 +12,6 @@ const RegisterForm = () => {
   const { auth } = useSelector((state) => state);
   const dispatch = useDispatch();
   const notify = (message) => toast(message);
-  const isGoodRes = auth?.response?.status === 200;
 
   const handleRoleChange = (e) => {
     const selectedRole = e.target.value;

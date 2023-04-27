@@ -110,11 +110,9 @@ public class Register extends HttpServlet {
             // Return JSON response
             response.getWriter().write(jsonResponse.toString());
         } catch (Exception e) {
-            System.out.println(e);
             jsonResponse = new JSONObject();
             jsonResponse.put("status", 500);
             jsonResponse.put("error", "an error ocurred, please try again later");
-            // jsonResponse.put("stack", e);
             response.setStatus(500);
             response.getWriter().write(jsonResponse.toString());
         }

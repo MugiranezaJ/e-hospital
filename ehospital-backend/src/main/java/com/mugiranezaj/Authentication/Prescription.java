@@ -47,7 +47,6 @@ public class Prescription extends HttpServlet {
 
                 Patient.patientMedecines.put(patientId, jsonObject);
             }
-            System.out.println(Patient.patientMedecines);
             jsonResponse.put("status", 200);
             jsonResponse.put("patient", patientId);
             jsonResponse.put("doctor", doctor);
@@ -63,13 +62,9 @@ public class Prescription extends HttpServlet {
             throws ServletException, IOException {
         jsonResponse = new JSONObject();
         response.setContentType("application/json");
-        // String requestBody = request.getReader().lines().collect(Collectors.joining());
-        // json = new JSONObject(requestBody);
-        // String patientId = json.optString("patientId", "")
         String patientId = request.getParameter("patientId");
 
         jsonResponse.put("status", 200);
-        // jsonResponse.put("message", "disease added successfully");
         jsonResponse.put("data", Patient.patientMedecines.get(patientId));
 
         response.getWriter().write(jsonResponse.toString());
